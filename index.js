@@ -4,8 +4,27 @@ const compression = require("compression");
 const db = require("./utils/db");
 const { hash, compare } = require("./utils/bcrypt");
 const cookieSession = require("cookie-session");
+const csurf = require("csurf");
 
 app.use(compression());
+
+app.use(express.static("public")); //url encoded always has to come first before csurf
+
+app.use(express.json()); //body parser
+
+app.use(
+    cookieSession({
+        secret: `I'm always angry.`,
+        maxAge: 1000 * 60 * 60 * 24 * 7 * 6
+    })
+);
+
+app.use(csurf());
+
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -17,16 +36,6 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-
-app.use(express.static("public")); //url encoded always has to come first before csurf
-app.use(express.json());
-
-app.use(
-    cookieSession({
-        secret: `I'm always angry.`,
-        maxAge: 1000 * 60 * 60 * 24 * 7 * 6
-    })
-);
 
 app.get("/welcome", (req, res) => {
     if (!req.session.userId) {
@@ -61,6 +70,26 @@ app.post("/register", (req, res) => {
         });
 });
 
+app.post("/login", (req, res) => {
+    const { email, password } = req.body;
+    db.loginUser(email).then(result => {
+        compare(password, result.rows[0].password)
+            .then(matchValue => {
+                if (matchValue) {
+                    req.session.userId = result.rows[0].id;
+                    res.json({ success: true });
+                    console.log("you got the right password");
+                } else {
+                    console.log("error in compare ");
+                }
+            })
+            .catch(error => {
+                console.log("error in hash login register ", error);
+                res.json({ success: false });
+            });
+    });
+});
+
 //this route needs to be the last route
 app.get("*", (req, res) => {
     if (req.session.userId) {
@@ -75,3 +104,6 @@ app.get("*", (req, res) => {
 app.listen(8080, function() {
     console.log("I'm listening.");
 });
+
+//lsof -i tcp:8080
+//kill -9

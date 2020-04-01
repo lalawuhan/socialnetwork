@@ -1,14 +1,20 @@
 import React from "react";
 import Registration from "./registration";
+import Login from "./login";
+import { HashRouter, Route } from "react-router-dom";
 
 export default class Welcome extends React.Component {
     render() {
         return (
-            <div>
-                <h1>Welome to the splash screen</h1>
-                <p>This is my social media project</p>
-                <Registration />
-            </div>
+            <HashRouter>
+                <div>
+                    <h1>Welcome to the splash screen</h1>
+                    {/* <Registration /> */}
+                    {/* <Login /> */}
+                    <Route exact path="/" component={Registration} />
+                    <Route path="/login" component={Login} />
+                </div>
+            </HashRouter>
         );
     }
 }
