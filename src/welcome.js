@@ -12,7 +12,8 @@ export default class Welcome extends React.Component {
                     {/* <Registration /> */}
                     {/* <Login /> */}
                     <Route exact path="/" component={Registration} />
-                    <Route path="/login" component={Login} />
+                    <Route exact path="/register" component={Registration} />
+                    <Route exact path="/login" component={Login} />
                 </div>
             </HashRouter>
         );
