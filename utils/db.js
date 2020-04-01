@@ -15,11 +15,23 @@ module.exports.addUser = (first, last, email, password) => {
     return db.query(q, params);
 };
 
-module.exports.loginUser = email => {
+module.exports.getUser = email => {
     const q = `
-        SELECT id, password FROM users
+        SELECT id, password 
+        FROM users
         WHERE email=$1
     `;
     const params = [email];
+    return db.query(q, params);
+};
+
+//Inseert into table for secret codes
+module.exports.resetPassword = (id, code, email, created_at) => {
+    const q = `
+        SELECT * FROM password_reset
+        WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';
+        Update
+    `;
+    const params = [id, code, email, created_at];
     return db.query(q, params);
 };
