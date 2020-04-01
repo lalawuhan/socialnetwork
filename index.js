@@ -78,9 +78,9 @@ app.post("/login", (req, res) => {
                 if (matchValue) {
                     req.session.userId = result.rows[0].id;
                     res.json({ success: true });
-                    console.log("you got the right password");
                 } else {
                     console.log("error in compare ");
+                    res.json({ success: false });
                 }
             })
             .catch(error => {
@@ -94,7 +94,6 @@ app.post("/login", (req, res) => {
 app.get("*", (req, res) => {
     if (req.session.userId) {
         console.log("I am now here /");
-
         res.sendFile(__dirname + "/index.html");
     } else {
         res.redirect("/welcome");
