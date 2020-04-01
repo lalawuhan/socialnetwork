@@ -25,13 +25,22 @@ module.exports.getUser = email => {
     return db.query(q, params);
 };
 
-//Inseert into table for secret codes
-module.exports.resetPassword = (id, code, email, created_at) => {
+module.exports.generateResetCode = (email, code) => {
     const q = `
-        SELECT * FROM password_reset
-        WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';
-        Update
+        INSERT into password_reset
+        VALUES ($1, $2)
+        RETURNING *
     `;
-    const params = [id, code, email, created_at];
+    const params = [email, code];
+    return db.query(q, params);
+};
+
+module.exports.verifySecretCode = (email, code) => {
+    const q = `
+    SELECT *
+    FROM password_reset
+    WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes' AND email = $1 AND code = $2 
+    `;
+    const params = [email, code];
     return db.query(q, params);
 };
