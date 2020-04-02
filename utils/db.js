@@ -27,7 +27,7 @@ module.exports.getUser = email => {
 
 module.exports.generateResetCode = (email, code) => {
     const q = `
-        INSERT into password_reset
+        INSERT into password_reset (email,code)
         VALUES ($1, $2)
         RETURNING *
     `;
