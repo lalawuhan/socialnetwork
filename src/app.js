@@ -23,11 +23,6 @@ export default class App extends React.Component {
                 console.log("error in get(/user) app.js", error);
             });
     }
-    changeImageUrl() {
-        this.setState({
-            uploaderVisibility: !this.state.uploaderVisibility
-        });
-    }
     render() {
         return (
             <React.Fragment>
