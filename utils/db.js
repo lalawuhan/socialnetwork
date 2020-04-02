@@ -25,9 +25,17 @@ module.exports.getUser = email => {
     return db.query(q, params);
 };
 
+module.exports.getUserData = id => {
+    const q = `SELECT * from users
+     WHERE id = $1   
+    `;
+    const params = [id];
+    return db.query(q, params);
+};
+
 module.exports.generateResetCode = (email, code) => {
     const q = `
-        INSERT into password_reset (email,code)
+        INSERT into password_reset  (email,code)
         VALUES ($1, $2)
         RETURNING *
     `;
@@ -52,5 +60,16 @@ module.exports.updatePassword = (password, email) => {
         WHERE email = $2
     `;
     const params = [email, password];
+    return db.query(q, params);
+};
+
+module.exports.addProfilePic = (image_url, id) => {
+    const q = `
+            UPDATE users 
+            SET image_url = $1
+            WHERE id = $2
+            RETURNING image_url
+   `;
+    const params = [image_url, id];
     return db.query(q, params);
 };
