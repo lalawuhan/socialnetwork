@@ -7,6 +7,33 @@ const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
+const config = require("./config");
+const s3 = require("./s3");
+
+// FILE UPLOAD BOILERPLATE //
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+
+const diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+
+//////////////
 
 app.use(compression());
 
@@ -20,13 +47,13 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 7 * 6
     })
 );
-/* 
+
 app.use(csurf());
 
 app.use(function(req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
-}); */
+});
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -45,6 +72,20 @@ app.get("/welcome", (req, res) => {
     } else {
         res.redirect("/");
     }
+});
+
+app.get("/user", function(req, res) {
+    console.log("index.js Get request /user");
+    db.getUserData(req.session.userId).then(results => {
+        console.log("results from getUserInfo: ", results.rows);
+        res.json({
+            id: results.rows[0].id,
+            first: results.rows[0].first,
+            last: results.rows[0].last,
+            image_url: results.rows[0].image_url,
+            biography: results.rows[0].biography
+        });
+    });
 });
 
 //register
@@ -73,6 +114,20 @@ app.post("/register", (req, res) => {
             console.log("error in Post register ", error);
         });
 });
+
+//async await
+/* 
+app.post("/register", async (req, res) => {
+    const { first, last, email, password } = req.body;
+    try {
+        let hashedPw = await hash(password); //do this first
+        let id = await db.addUser(first, last, email, hashedPw); //then run db insert, then only do things after
+        req.session.userId = id;
+        res.json({ success: true });
+    } catch (error) {
+        console.log("error in POST/registration", error);
+    }
+}); */
 
 //login
 
@@ -105,15 +160,14 @@ app.post("/password/reset/start", (req, res) => {
     });
     console.log("post request to /reset happened");
     db.getUser(req.body.email).then(result => {
-        console.log("user exists", result.rows[0]);
+        console.log("user exists, result rows :", result.rows[0]);
         if (result.rows[0] != undefined) {
             //generate secret code
-
             console.log("secret code is", secretCode);
             db.generateResetCode(req.body.email, secretCode);
             ses.sendEmail(
                 "users-email@gmail.com",
-                "Yout reset code",
+                "Your reset code",
                 "a super secret code " + secretCode
             );
             res.json({ success: true });
@@ -156,6 +210,27 @@ app.post("/password/reset/verify", (req, res) => {
             console.log("error on whole reset/ db bverify secret code", error);
             res.json({ success: false });
         });
+});
+
+//Upload image
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    console.log("req file, upload", req.file);
+    if (req.file) {
+        let image_url = config.s3Url + req.file.filename;
+        db.addProfilePic(image_url, req.session.userId)
+            .then(image => {
+                console.log("image jsom", image);
+                res.json(image);
+            })
+            .catch(error => {
+                console.log("error in upload profile pic, index.js", error);
+            });
+    } else {
+        res.sendStatus(500);
+        res.json({
+            success: false
+        });
+    }
 });
 
 //this route needs to be the last route
