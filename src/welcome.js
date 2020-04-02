@@ -3,7 +3,6 @@ import Registration from "./registration";
 import Login from "./login";
 import ResetPassword from "./resetpassword";
 import { HashRouter, Route } from "react-router-dom";
-
 export default class Welcome extends React.Component {
     render() {
         return (

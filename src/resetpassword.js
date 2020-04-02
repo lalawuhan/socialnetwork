@@ -65,13 +65,18 @@ export default class ResetPassword extends React.Component {
                     {this.state.error && <div className="error">oh no!</div>}
                     <h1>Reset Password</h1>
                     <p>Please enter the code you received by email below</p>
-                    <input name="code" onChange={e => this.handleChange(e)} />
+                    <input
+                        name="code"
+                        onChange={e => this.handleChange(e)}
+                        key="secret-code"
+                    />
                     <p>
                         Please enter a <strong>new</strong> password
                     </p>
                     <input
                         name="password"
                         onChange={e => this.handleChange(e)}
+                        key="new-password"
                     />
                     <button onClick={() => this.verifyCode()}>Submit</button>
                     <br />
