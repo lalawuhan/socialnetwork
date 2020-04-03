@@ -232,6 +232,16 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
     }
 });
+//add biography
+app.post("/bio", (req, res) => {
+    console.log("index.js /post bio", req.body);
+    db.updateBiography(req.body.addBio, req.session.userId).then(results => {
+        console.log("index.js results from /post bio: ", results.rows);
+        res.json({
+            biography: results.rows[0].biography
+        });
+    });
+});
 
 //this route needs to be the last route
 app.get("*", (req, res) => {
