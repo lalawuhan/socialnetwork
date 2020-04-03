@@ -3,6 +3,7 @@ import axios from "./axios";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
+import { Navbar } from "./standardStyles.js";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -23,14 +24,18 @@ export default class App extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <ProfilePic
-                    image_url={this.state.image_url}
-                    toggleModal={() =>
-                        this.setState({
-                            uploaderVisibility: !this.state.uploaderVisibility
-                        })
-                    }
-                />
+                <Navbar className="navbar">
+                    <ProfilePic
+                        image_url={this.state.image_url}
+                        toggleModal={() =>
+                            this.setState({
+                                uploaderVisibility: !this.state
+                                    .uploaderVisibility
+                            })
+                        }
+                    />
+                </Navbar>
+
                 {this.state.uploaderVisibility && (
                     <Uploader
                         changeImageUrl={image_url =>

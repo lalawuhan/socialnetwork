@@ -10,6 +10,7 @@ export default function ProfilePic(props) {
                 src={props.image_url}
                 alt="user profile photo"
                 onClick={props.toggleModal}
+                className="profile-pic"
             />
         </>
     );
