@@ -219,7 +219,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         let image_url = config.s3Url + req.file.filename;
         db.addProfilePic(image_url, req.session.userId)
             .then(image => {
-                console.log("image jsom", image);
+                //console.log("image jsom", image);
                 res.json(image);
             })
             .catch(error => {
@@ -234,9 +234,9 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 //add biography
 app.post("/bio", (req, res) => {
-    console.log("index.js /post bio", req.body);
+    // console.log("index.js /post bio", req.body);
     db.updateBiography(req.body.addBio, req.session.userId).then(results => {
-        console.log("index.js results from /post bio: ", results.rows);
+        //console.log("index.js results from /post bio: ", results.rows);
         res.json({
             biography: results.rows[0].biography
         });
@@ -246,7 +246,7 @@ app.post("/bio", (req, res) => {
 //this route needs to be the last route
 app.get("*", (req, res) => {
     if (req.session.userId) {
-        console.log("I am now here /");
+        //console.log("I am now here /");
         res.sendFile(__dirname + "/index.html");
     } else {
         res.redirect("/welcome");
