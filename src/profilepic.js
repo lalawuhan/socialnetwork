@@ -1,16 +1,15 @@
 import React from "react";
 
 export default function ProfilePic(props) {
-    let image_url = props.image_url;
-    //console.log("imageurl profilepic", image_url);
-    image_url = image_url || "/images/default.png";
+    console.log("props from here", props);
+
     return (
         <>
             <img
-                src={props.image_url}
-                alt="user profile photo"
+                alt={`${props.first} ${props.last} profile photo`}
                 onClick={props.toggleModal}
                 className="profile-pic"
+                src={props.image_url ? props.image_url : "/images/default.png"}
             />
         </>
     );
