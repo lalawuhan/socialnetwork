@@ -15,7 +15,7 @@ module.exports.addUser = (first, last, email, password) => {
     return db.query(q, params);
 };
 
-module.exports.getUser = email => {
+module.exports.getUser = (email) => {
     const q = `
         SELECT id, password 
         FROM users
@@ -25,7 +25,7 @@ module.exports.getUser = email => {
     return db.query(q, params);
 };
 
-module.exports.getUserData = id => {
+module.exports.getUserData = (id) => {
     const q = `SELECT * from users
      WHERE id = $1   
     `;
@@ -43,7 +43,7 @@ module.exports.generateResetCode = (email, code) => {
     return db.query(q, params);
 };
 
-module.exports.verifySecretCode = email => {
+module.exports.verifySecretCode = (email) => {
     const q = `
     SELECT code
     FROM password_reset
@@ -82,5 +82,15 @@ module.exports.updateBiography = (biography, id) => {
             RETURNING biography
    `;
     const params = [biography, id];
+    return db.query(q, params);
+};
+
+module.exports.getUserById = (id) => {
+    const q = `
+            SELECT * 
+            FROM users
+            WHERE id = $1
+`;
+    const params = [id];
     return db.query(q, params);
 };

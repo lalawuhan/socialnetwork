@@ -16,21 +16,21 @@ const uidSafe = require("uid-safe");
 const path = require("path");
 
 const diskStorage = multer.diskStorage({
-    destination: function(req, file, callback) {
+    destination: function (req, file, callback) {
         callback(null, __dirname + "/uploads");
     },
-    filename: function(req, file, callback) {
-        uidSafe(24).then(function(uid) {
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
             callback(null, uid + path.extname(file.originalname));
         });
-    }
+    },
 });
 
 const uploader = multer({
     storage: diskStorage,
     limits: {
-        fileSize: 2097152
-    }
+        fileSize: 2097152,
+    },
 });
 
 //////////////
@@ -44,13 +44,13 @@ app.use(express.json()); //body parser
 app.use(
     cookieSession({
         secret: `I'm always angry.`,
-        maxAge: 1000 * 60 * 60 * 24 * 7 * 6
+        maxAge: 1000 * 60 * 60 * 24 * 7 * 6,
     })
 );
 
 app.use(csurf());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
@@ -59,7 +59,7 @@ if (process.env.NODE_ENV != "production") {
     app.use(
         "/bundle.js",
         require("http-proxy-middleware")({
-            target: "http://localhost:8081/"
+            target: "http://localhost:8081/",
         })
     );
 } else {
@@ -74,16 +74,14 @@ app.get("/welcome", (req, res) => {
     }
 });
 
-app.get("/user", function(req, res) {
-    console.log("index.js Get request /user");
-    db.getUserData(req.session.userId).then(results => {
-        console.log("results from getUserInfo: ", results.rows);
+app.get("/user", function (req, res) {
+    db.getUserData(req.session.userId).then((results) => {
         res.json({
             id: results.rows[0].id,
             first: results.rows[0].first,
             last: results.rows[0].last,
             image_url: results.rows[0].image_url,
-            biography: results.rows[0].biography
+            biography: results.rows[0].biography,
         });
     });
 });
@@ -94,9 +92,9 @@ app.post("/register", (req, res) => {
     console.log("post /register body", req.body);
     const { first, last, email, password } = req.body;
     hash(password)
-        .then(hashedPw => {
+        .then((hashedPw) => {
             db.addUser(first, last, email, hashedPw)
-                .then(response => {
+                .then((response) => {
                     req.session.userId = response.rows[0].id;
                     req.session.first = response.rows[0].first;
                     req.session.last = response.rows[0].last;
@@ -105,12 +103,12 @@ app.post("/register", (req, res) => {
                     req.session.biography = response.rows[0].biography;
                     res.json({ success: true });
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log("error in hash password register ", error);
                     res.json({ success: false });
                 });
         })
-        .catch(error => {
+        .catch((error) => {
             console.log("error in Post register ", error);
         });
 });
@@ -133,9 +131,9 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
-    db.getUser(email).then(result => {
+    db.getUser(email).then((result) => {
         compare(password, result.rows[0].password)
-            .then(matchValue => {
+            .then((matchValue) => {
                 if (matchValue) {
                     req.session.userId = result.rows[0].id;
                     res.json({ success: true });
@@ -144,7 +142,7 @@ app.post("/login", (req, res) => {
                     res.json({ success: false });
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log("error in hash login register ", error);
                 res.json({ success: false });
             });
@@ -156,10 +154,10 @@ app.post("/login", (req, res) => {
 app.post("/password/reset/start", (req, res) => {
     //const email = req.body.email;
     const secretCode = cryptoRandomString({
-        length: 6
+        length: 6,
     });
     console.log("post request to /reset happened");
-    db.getUser(req.body.email).then(result => {
+    db.getUser(req.body.email).then((result) => {
         console.log("user exists, result rows :", result.rows[0]);
         if (result.rows[0] != undefined) {
             //generate secret code
@@ -182,14 +180,14 @@ app.post("/password/reset/verify", (req, res) => {
     console.log("reset verify body", req.body);
     //const { email, password } = req.body;
     db.verifySecretCode(req.body.email)
-        .then(result => {
+        .then((result) => {
             console.log("result from verify ", result.rows);
             if (result.rows != undefined) {
                 hash(req.body.password)
-                    .then(hashedPw => {
+                    .then((hashedPw) => {
                         db.updatePassword(req.body.email, hashedPw)
                             .then(res.json({ success: true }))
-                            .catch(error => {
+                            .catch((error) => {
                                 console.log(
                                     "error in updating password /verify ",
                                     error
@@ -197,7 +195,7 @@ app.post("/password/reset/verify", (req, res) => {
                                 res.json({ success: false });
                             });
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log("error in post /verify", error);
                         res.json({ success: false });
                     });
@@ -206,7 +204,7 @@ app.post("/password/reset/verify", (req, res) => {
                 res.json({ success: false });
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.log("error on whole reset/ db bverify secret code", error);
             res.json({ success: false });
         });
@@ -218,27 +216,40 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     if (req.file) {
         let image_url = config.s3Url + req.file.filename;
         db.addProfilePic(image_url, req.session.userId)
-            .then(image => {
+            .then((image) => {
                 //console.log("image jsom", image);
                 res.json(image);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log("error in upload profile pic, index.js", error);
             });
     } else {
         res.sendStatus(500);
         res.json({
-            success: false
+            success: false,
         });
     }
 });
 //add biography
 app.post("/bio", (req, res) => {
     // console.log("index.js /post bio", req.body);
-    db.updateBiography(req.body.addBio, req.session.userId).then(results => {
+    db.updateBiography(req.body.addBio, req.session.userId).then((results) => {
         //console.log("index.js results from /post bio: ", results.rows);
         res.json({
-            biography: results.rows[0].biography
+            biography: results.rows[0].biography,
+        });
+    });
+});
+
+//get user by id
+app.get("/user/:id.json", (req, res) => {
+    db.getUserById(req.params.id).then(({ rows }) => {
+        res.json({
+            id: rows[0].id,
+            first: rows[0].first,
+            last: rows[0].last,
+            image_url: rows[0].image_url,
+            biography: rows[0].biography,
         });
     });
 });
@@ -253,7 +264,7 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(8080, function() {
+app.listen(8080, function () {
     console.log("I'm listening.");
 });
 
