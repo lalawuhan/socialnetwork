@@ -94,3 +94,23 @@ module.exports.getUserById = (id) => {
     const params = [id];
     return db.query(q, params);
 };
+
+module.exports.getNewestMembers = () => {
+    const q = `
+            SELECT id, first, last, image_url
+            FROM users
+            ORDER BY id DESC
+            LIMIT 3
+        `;
+    return db.query(q);
+};
+
+module.exports.getMatchingUsers = (val) => {
+    return db.query(
+        `SELECT id, first, last, image_url
+            FROM users
+            WHERE (first || ' ' || last) ILIKE $1
+            ORDER BY first ASC`,
+        [val + "%"]
+    );
+};
