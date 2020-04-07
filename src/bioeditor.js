@@ -5,7 +5,7 @@ export default class BioEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            bioEditorVisibility: false
+            bioEditorVisibility: false,
         };
     }
     handleChange(event) {
@@ -19,16 +19,16 @@ export default class BioEditor extends React.Component {
         //console.log("what does addbio give", bioData);
         axios
             .post("/bio", bioData)
-            .then(res => {
+            .then((res) => {
                 //console.log("res from /post bio", res.data.biography);
                 self.setState({
                     bioEditorVisibility: false,
-                    addBio: res.data.biography
+                    addBio: res.data.biography,
                 });
                 //console.log("selfie", self);
                 self.props.setBio(res.data.biography);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.log("error in posting bio, /post", error);
             });
     }
@@ -39,16 +39,15 @@ export default class BioEditor extends React.Component {
             if (this.props.addBio == null) {
                 return (
                     <div>
-                        <a
-                            href="#"
+                        <button
                             onClick={() =>
                                 this.setState({
-                                    bioEditorVisibility: true
+                                    bioEditorVisibility: true,
                                 })
                             }
                         >
                             Create a bio
-                        </a>
+                        </button>
                     </div>
                 );
             } else {
@@ -56,16 +55,15 @@ export default class BioEditor extends React.Component {
                 return (
                     <div>
                         {this.props.addBio}
-                        <a
-                            href="#"
+                        <button
                             onClick={() =>
                                 this.setState({
-                                    bioEditorVisibility: true
+                                    bioEditorVisibility: true,
                                 })
                             }
                         >
                             Edit Bio
-                        </a>
+                        </button>
                     </div>
                 );
             }
