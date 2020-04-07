@@ -254,6 +254,31 @@ app.get("/user/:id.json", (req, res) => {
     });
 });
 
+//get latest users
+app.get("/newestUsers", (req, res) => {
+    db.getNewestUsers()
+        .then((results) => {
+            //console.log("newwest peeps", results.rows);
+            res.json(results.rows);
+        })
+        .catch((error) => {
+            console.log("index.js /users db.getNewestUsers error: ", error);
+        });
+});
+
+app.get("/searchUsers/", (req, res) => {
+    const q = req.query.q;
+    //console.log("query for searching users, index.js:", q);
+    db.getMatchingUsers(q)
+        .then((results) => {
+            //console.log("search results:", results);
+            res.json(results.rows);
+        })
+        .catch((error) => {
+            console.log("index.js searched for user fail: ", error);
+        });
+});
+
 //this route needs to be the last route
 app.get("*", (req, res) => {
     if (req.session.userId) {
