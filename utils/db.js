@@ -95,7 +95,7 @@ module.exports.getUserById = (id) => {
     return db.query(q, params);
 };
 
-module.exports.getNewestMembers = () => {
+module.exports.getNewestUsers = () => {
     const q = `
             SELECT id, first, last, image_url
             FROM users
