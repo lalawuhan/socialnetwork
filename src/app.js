@@ -5,6 +5,7 @@ import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherProfile from "./otherProfile";
+import FindPeople from "./findpeople";
 import { Navbar } from "./standardStyles.js";
 
 export default class App extends React.Component {
@@ -85,6 +86,7 @@ export default class App extends React.Component {
                             />
                         )}
                     />
+                    <Route path="/users" component={FindPeople} />
                 </BrowserRouter>
             </React.Fragment>
         );
