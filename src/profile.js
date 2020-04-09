@@ -3,21 +3,20 @@ import ProfilePic from "./profilepic";
 import BioEditor from "./bioeditor";
 import { Title, ProfileWrapper } from "./standardStyles.js";
 
-export default function Profile(props) {
-    //console.log("this is the main profile component", props); //props should come from app.js
+export default function Profile({ first, last, image_url, addBio, setBio }) {
     return (
         <>
             <div>
-                <Title>Happy Friday</Title>
+                <Title>Welcome to social network</Title>
                 <Title>
-                    User: {props.first} {props.last}
+                    User: {first} {last}
                 </Title>
             </div>
             <ProfileWrapper>
                 <div>
-                    <ProfilePic image_url={props.image_url} />
+                    <ProfilePic image_url={image_url} />
                 </div>
-                <BioEditor addBio={props.addBio} setBio={props.setBio} />
+                <BioEditor addBio={addBio} setBio={setBio} />
             </ProfileWrapper>
         </>
     );
