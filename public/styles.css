@@ -87,3 +87,15 @@ body {
     font-size: inherit;
     line-height: inherit;
 }
+body.light-mode {
+    background: #fff;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+body.dark-mode {
+    background: #1a1919;
+    color: #999;
+}
+img.dark-mode {
+    border: 1px solid pink;
+}
