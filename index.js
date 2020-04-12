@@ -279,6 +279,37 @@ app.get("/searchUsers/", (req, res) => {
         });
 });
 
+// friendship routes
+app.get("/initial-friendship-status/:id", (req, res) => {
+    db.CheckInitialFriendshipStatus(req.session.userId, req.params.id).then(
+        (results) => {
+            res.json(results.rows[0]);
+        }
+    );
+});
+
+app.post("/make-friend-request/:id", (req, res) => {
+    db.makeFriendRequest(req.session.userId, req.params.id).then((results) => {
+        res.json(results.rows[0]);
+    });
+});
+
+app.post("/accept-friend-request/:id", (req, res) => {
+    db.acceptFriendRequest(req.session.userId, req.params.id).then(() => {
+        res.json({
+            success: true,
+        });
+    });
+});
+
+app.post("/end-friendship/:id", (req, res) => {
+    db.endFriendship(req.session.userId, req.params.id).then(() => {
+        res.json({
+            success: true,
+        });
+    });
+});
+
 //this route needs to be the last route
 app.get("*", (req, res) => {
     if (req.session.userId) {
