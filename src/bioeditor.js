@@ -1,84 +1,85 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "./axios";
 
-export default class BioEditor extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            bioEditorVisibility: false,
-        };
-    }
-    handleChange(event) {
-        this.setState({ title: event.target.value });
-    }
+export default function BioEditor(props) {
+    const [data, setData] = useState({
+        ...props,
+        bioEditorVisibility: false,
+    });
 
-    submit() {
-        var self = this;
-        var addBio = document.getElementById("inputtext").value;
-        var bioData = { addBio: addBio };
-        //console.log("what does addbio give", bioData);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        let addBio = event.target.value;
+        console.log("addBio", addBio);
         axios
-            .post("/bio", bioData)
+            .post("/bio", { addBio })
             .then((res) => {
-                //console.log("res from /post bio", res.data.biography);
-                self.setState({
+                console.log("res from /post bio", res.data);
+                setData({
                     bioEditorVisibility: false,
                     addBio: res.data.biography,
                 });
-                //console.log("selfie", self);
-                self.props.setBio(res.data.biography);
+                props.setBio(res.data.biography);
             })
             .catch((error) => {
                 console.log("error in posting bio, /post", error);
             });
-    }
+    };
 
-    render() {
-        if (this.state.bioEditorVisibility == false) {
-            //if the user doesn't have a bio
-            if (this.props.addBio == null) {
-                return (
-                    <div>
-                        <button
-                            onClick={() =>
-                                this.setState({
-                                    bioEditorVisibility: true,
-                                })
-                            }
-                        >
-                            Create a bio
-                        </button>
-                    </div>
-                );
-            } else {
-                //already have bio?
-                return (
-                    <div>
-                        {this.props.addBio}
-                        <button
-                            onClick={() =>
-                                this.setState({
-                                    bioEditorVisibility: true,
-                                })
-                            }
-                        >
-                            Edit Bio
-                        </button>
-                    </div>
-                );
-            }
-        } else {
+    if (data.bioEditorVisibility == false) {
+        console.log("checking bio status is happening");
+        console.log("data in check", props);
+        //if the user doesn't have a bio
+        if (props.addBio == null || props.addBio == "") {
             return (
-                <>
-                    <textarea
-                        id="inputtext"
-                        name="bio"
-                        value={this.state.bio}
-                        onChange={this.handleChange.bind(this)}
-                    ></textarea>
-                    <button onClick={() => this.submit()}>Update</button>
-                </>
+                <div>
+                    <button
+                        onClick={() =>
+                            setData({
+                                bioEditorVisibility: true,
+                                addBio: props.addBio,
+                            })
+                        }
+                    >
+                        Create a bio
+                    </button>
+                </div>
+            );
+        } else {
+            //already have bio?
+            return (
+                <div>
+                    {props.addBio}
+                    <button
+                        onClick={() =>
+                            setData({
+                                bioEditorVisibility: true,
+                                addBio: props.addBio,
+                            })
+                        }
+                    >
+                        Edit Bio
+                    </button>
+                </div>
             );
         }
+    } else {
+        return (
+            <form>
+                <textarea
+                    id="inputText"
+                    name="inputText"
+                    value={data.addBio}
+                    onChange={() => setData({ addBio: event.target.value })}
+                ></textarea>
+                <button
+                    type="submit"
+                    value={data.addBio}
+                    onClick={handleSubmit}
+                >
+                    Update
+                </button>
+            </form>
+        );
     }
 }
