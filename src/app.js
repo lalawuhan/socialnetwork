@@ -61,11 +61,11 @@ export default function App() {
                             first={data.first}
                             last={data.last}
                             image_url={data.image_url}
-                            addBio={data.biography}
-                            setBio={(addBio) =>
+                            bioText={data.biography}
+                            setBio={(bioText) =>
                                 setData({
                                     ...data,
-                                    biography: addBio,
+                                    biography: bioText,
                                 })
                             }
                         />

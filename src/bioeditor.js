@@ -9,15 +9,13 @@ export default function BioEditor(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        let addBio = event.target.value;
-        console.log("addBio", addBio);
+        let bioText = event.target.value;
         axios
-            .post("/bio", { addBio })
+            .post("/bio", { bioText })
             .then((res) => {
-                console.log("res from /post bio", res.data);
                 setData({
                     bioEditorVisibility: false,
-                    addBio: res.data.biography,
+                    bioText: res.data.biography,
                 });
                 props.setBio(res.data.biography);
             })
@@ -27,17 +25,14 @@ export default function BioEditor(props) {
     };
 
     if (data.bioEditorVisibility == false) {
-        console.log("checking bio status is happening");
-        console.log("data in check", props);
         //if the user doesn't have a bio
-        if (props.addBio == null || props.addBio == "") {
+        if (props.bioText == null || props.bioText == "") {
             return (
                 <div>
                     <button
                         onClick={() =>
                             setData({
                                 bioEditorVisibility: true,
-                                addBio: props.addBio,
                             })
                         }
                     >
@@ -49,12 +44,12 @@ export default function BioEditor(props) {
             //already have bio?
             return (
                 <div>
-                    {props.addBio}
+                    {props.bioText}
                     <button
                         onClick={() =>
                             setData({
                                 bioEditorVisibility: true,
-                                addBio: props.addBio,
+                                bioText: props.bioText,
                             })
                         }
                     >
@@ -69,12 +64,12 @@ export default function BioEditor(props) {
                 <textarea
                     id="inputText"
                     name="inputText"
-                    value={data.addBio}
-                    onChange={() => setData({ addBio: event.target.value })}
+                    value={data.bioText}
+                    onChange={() => setData({ bioText: event.target.value })}
                 ></textarea>
                 <button
                     type="submit"
-                    value={data.addBio}
+                    value={data.bioText}
                     onClick={handleSubmit}
                 >
                     Update
