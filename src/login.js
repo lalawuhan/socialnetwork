@@ -8,14 +8,20 @@ export default function Login() {
     const [submit, error] = useAuthSubmit("/login", values);
 
     return (
-        <form>
-            {error && <div className="error">Something went wrong!</div>}
-            <label>Email: </label>
-            <input name="email" type="email" onChange={handleChange} />
-            <label>Password </label>
-            <input name="password" type="password" onChange={handleChange} />
-            <button onClick={submit}>submit</button>
-            <Link to="/register">Register</Link>;
-        </form>
+        <div>
+            <form>
+                {error && <div className="error">Something went wrong!</div>}
+                <label>Email: </label>
+                <input name="email" type="email" onChange={handleChange} />
+                <label>Password </label>
+                <input
+                    name="password"
+                    type="password"
+                    onChange={handleChange}
+                />
+                <button onClick={submit}>submit</button>
+            </form>
+            <Link to="/register">Register</Link>
+        </div>
     );
 }
