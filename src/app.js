@@ -6,7 +6,14 @@ import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherProfile from "./otherProfile";
 import FindPeople from "./findpeople";
-import { Navbar } from "./standardStyles.js";
+import Friends from "./friends";
+import {
+    Navbar,
+    StyledHeadlinePrimary,
+    UploaderWrap,
+} from "./standardStyles.js";
+import { Link } from "react-router-dom";
+import DarkModeToggle from "./darkmodetoggle";
 
 export default function App() {
     const [data, setData] = useState({});
@@ -25,6 +32,10 @@ export default function App() {
     return (
         <React.Fragment>
             <BrowserRouter>
+                <DarkModeToggle />
+                <Link to="/users">Find People</Link>
+                <Link to="/friends">Friends</Link>
+
                 <Navbar className="navbar">
                     <ProfilePic
                         first={data.first}
@@ -84,6 +95,7 @@ export default function App() {
                     )}
                 />
                 <Route path="/users" component={FindPeople} />
+                <Route path="/friends" component={Friends} />
             </BrowserRouter>
         </React.Fragment>
     );

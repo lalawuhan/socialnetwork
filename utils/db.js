@@ -155,3 +155,17 @@ module.exports.endFriendship = (sender_id, receiver_id) => {
     const params = [sender_id, receiver_id];
     return db.query(q, params);
 };
+
+module.exports.getFriendsAndRequesters = (id) => {
+    const q = `
+    SELECT users.id, first, last, image_url, accepted
+    FROM friendships
+    JOIN users
+    ON (accepted = false AND receiver_id = $1 AND sender_id = users.id)
+    OR (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+    OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)
+
+    `;
+    const params = [id];
+    return db.query(q, params);
+};

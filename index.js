@@ -89,7 +89,6 @@ app.get("/user", function (req, res) {
 //register
 
 app.post("/register", (req, res) => {
-    console.log("post /register body", req.body);
     const { first, last, email, password } = req.body;
     hash(password)
         .then((hashedPw) => {
@@ -232,9 +231,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 //add biography
 app.post("/bio", (req, res) => {
-    // console.log("index.js /post bio", req.body);
     db.updateBiography(req.body.bioText, req.session.userId).then((results) => {
-        //console.log("index.js results from /post bio: ", results.rows);
         res.json({
             biography: results.rows[0].biography,
         });
@@ -258,7 +255,6 @@ app.get("/user/:id.json", (req, res) => {
 app.get("/newestUsers", (req, res) => {
     db.getNewestUsers()
         .then((results) => {
-            //console.log("newwest peeps", results.rows);
             res.json(results.rows);
         })
         .catch((error) => {
@@ -268,10 +264,8 @@ app.get("/newestUsers", (req, res) => {
 
 app.get("/searchUsers/", (req, res) => {
     const q = req.query.q;
-    //console.log("query for searching users, index.js:", q);
     db.getMatchingUsers(q)
         .then((results) => {
-            //console.log("search results:", results);
             res.json(results.rows);
         })
         .catch((error) => {
@@ -308,6 +302,16 @@ app.post("/end-friendship/:id", (req, res) => {
             success: true,
         });
     });
+});
+
+app.get("/friends-requesters", (req, res) => {
+    db.getFriendsAndRequesters(req.session.userId)
+        .then((payload) => {
+            res.json(payload.rows);
+        })
+        .catch((error) => {
+            console.log("index.js friends requesters failed: ", error);
+        });
 });
 
 //this route needs to be the last route

@@ -49,6 +49,9 @@ export default function FindPeople() {
                 />
                 {searchResults == undefined && <h2>New Users:</h2>}
             </>
+            <p>
+                You are searching for <strong>{searchResults}</strong>
+            </p>
 
             <div>
                 {newestUsers.map((user) => (
