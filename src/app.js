@@ -4,16 +4,18 @@ import { BrowserRouter, Route } from "react-router-dom";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
-import OtherProfile from "./otherProfile";
+import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
 import {
     Navbar,
     StyledHeadlinePrimary,
     UploaderWrap,
+    UpperNav,
 } from "./standardStyles.js";
 import { Link } from "react-router-dom";
 import DarkModeToggle from "./darkmodetoggle";
+import Chat from "./chat";
 
 export default function App() {
     const [data, setData] = useState({});
@@ -32,10 +34,12 @@ export default function App() {
     return (
         <React.Fragment>
             <BrowserRouter>
-                <DarkModeToggle />
-                <Link to="/users">Find People</Link>
-                <Link to="/friends">Friends</Link>
-
+                <UpperNav>
+                    <DarkModeToggle />
+                    <Link to="/users">Find People</Link>
+                    <Link to="/friends">Friends</Link>
+                    <Link to="/chat">Chat</Link>
+                </UpperNav>
                 <Navbar className="navbar">
                     <ProfilePic
                         first={data.first}
@@ -48,22 +52,26 @@ export default function App() {
                             })
                         }
                     />
-                    <h1>
-                        {data.first} {data.last}
-                    </h1>
-                    <p>{data.biography}</p>
+                    <div>
+                        <StyledHeadlinePrimary>
+                            {data.first} {data.last}
+                        </StyledHeadlinePrimary>
+                        <p>{data.biography}</p>
+                    </div>
                 </Navbar>
-                {data.uploaderVisibility && (
-                    <Uploader
-                        changeImageUrl={(image_url) =>
-                            setData({
-                                ...data,
-                                image_url: image_url,
-                                uploaderVisibility: false,
-                            })
-                        }
-                    />
-                )}
+                <UploaderWrap>
+                    {data.uploaderVisibility && (
+                        <Uploader
+                            changeImageUrl={(image_url) =>
+                                setData({
+                                    ...data,
+                                    image_url: image_url,
+                                    uploaderVisibility: false,
+                                })
+                            }
+                        />
+                    )}
+                </UploaderWrap>
                 <Route
                     exact
                     path="/"
@@ -82,7 +90,6 @@ export default function App() {
                         />
                     )}
                 />
-
                 {/* force a new component to be rendered */}
                 <Route
                     path="/user/:id"
@@ -96,6 +103,7 @@ export default function App() {
                 />
                 <Route path="/users" component={FindPeople} />
                 <Route path="/friends" component={Friends} />
+                <Route path="/chat" component={Chat} />
             </BrowserRouter>
         </React.Fragment>
     );

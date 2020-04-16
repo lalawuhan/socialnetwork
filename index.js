@@ -355,7 +355,7 @@ io.on("connection", function (socket) {
     db.getLastTenMessages()
         .then((data) => {
             let messageData = data.rows;
-            io.sockets.emit("chatMessages", messageData);
+            io.sockets.emit("chatMessages", messageData.reverse());
         })
         .catch((err) => console.log(err));
 
@@ -363,7 +363,6 @@ io.on("connection", function (socket) {
         db.addMessage(userId, msg)
             .then(() => {
                 db.getLastTenMessages().then((newMessage) => {
-                    console.log("new message", newMessage.rows[0]);
                     let msgObj = {
                         first: newMessage.rows[0].first,
                         last: newMessage.rows[0].last,
