@@ -355,18 +355,20 @@ io.on("connection", function (socket) {
     db.getLastTenMessages()
         .then((data) => {
             let messageData = data.rows;
-            io.sockets.emit("chatMessages", messageData.reverse());
+            io.sockets.emit("chatMessages", messageData);
         })
         .catch((err) => console.log(err));
 
     socket.on("chatMessage", (msg) => {
         db.addMessage(userId, msg)
             .then(() => {
-                db.getUserData(userId).then((user) => {
+                db.getLastTenMessages().then((newMessage) => {
+                    console.log("new message", newMessage.rows[0]);
                     let msgObj = {
-                        first: user.rows[0].first,
-                        last: user.rows[0].last,
-                        image_url: user.rows[0].image_url,
+                        first: newMessage.rows[0].first,
+                        last: newMessage.rows[0].last,
+                        image_url: newMessage.rows[0].image_url,
+                        time_posted: newMessage.rows[0].time_posted,
                         message: msg,
                     };
                     io.sockets.emit("chatMessage", msgObj);
