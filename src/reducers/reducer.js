@@ -20,6 +20,16 @@ export default function reducer(state = {}, action) {
                 ...state,
                 payload: state.payload.filter((user) => user.id != action.id),
             };
+        case actions.GET_MESSAGES:
+            return {
+                ...state,
+                messages: action.messages,
+            };
+        case actions.GET_MESSAGE:
+            return {
+                ...state,
+                messages: [...state.messages, action.message],
+            };
         default:
             return state;
     }

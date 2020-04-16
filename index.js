@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
 const compression = require("compression");
 const db = require("./utils/db");
 const { hash, compare } = require("./utils/bcrypt");
-const cookieSession = require("cookie-session");
 const csurf = require("csurf");
 const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
@@ -41,12 +42,28 @@ app.use(express.static("public")); //url encoded always has to come first before
 
 app.use(express.json()); //body parser
 
+// COOKIE SESSION //
+
+/* const cookieSession = require("cookie-session");
+
 app.use(
     cookieSession({
         secret: `I'm always angry.`,
         maxAge: 1000 * 60 * 60 * 24 * 7 * 6,
     })
-);
+); */
+
+const cookieSession = require("cookie-session");
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+3;
 
 app.use(csurf());
 
@@ -324,10 +341,39 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(8080, function () {
+server.listen(8080, function () {
     console.log("I'm listening.");
 });
 
-//lsof -i tcp:8080
-//kill -9
-//global.catsup@spicedling.email
+io.on("connection", function (socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.userId;
+    db.getLastTenMessages()
+        .then((data) => {
+            let messageData = data.rows;
+            io.sockets.emit("chatMessages", messageData.reverse());
+        })
+        .catch((err) => console.log(err));
+
+    socket.on("chatMessage", (msg) => {
+        db.addMessage(userId, msg)
+            .then(() => {
+                db.getUserData(userId).then((user) => {
+                    let msgObj = {
+                        first: user.rows[0].first,
+                        last: user.rows[0].last,
+                        image_url: user.rows[0].image_url,
+                        message: msg,
+                    };
+                    io.sockets.emit("chatMessage", msgObj);
+                });
+            })
+            .catch((error) => {
+                console.log("error index.js io sendMessage", error);
+            });
+    });
+});

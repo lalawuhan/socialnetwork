@@ -4,6 +4,8 @@ import axios from "../axios";
 export const GET_FRIENDS_AND_REQUESTERS = "GET_FRIENDS_AND_REQUESTERS";
 export const ACCEPT_FRIEND_REQUEST = "ACCEPT_FRIEND_REQUEST";
 export const END_FRIENDSHIP = "END_FRIENDSHIP";
+export const GET_MESSAGE = "GET_MESSAGE";
+export const GET_MESSAGES = "GET_MESSAGES";
 
 export function getFriendsAndRequesters() {
     return axios
@@ -48,4 +50,18 @@ export function endFriendship(id) {
         .catch((err) => {
             console.log("endFriendship err: ", err);
         });
+}
+
+export function chatMessages(msgs) {
+    return {
+        type: "GET_MESSAGES",
+        messages: msgs,
+    };
+}
+
+export function chatMessage(msg) {
+    return {
+        type: "GET_MESSAGE",
+        message: msg,
+    };
 }
