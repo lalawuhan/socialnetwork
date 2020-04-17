@@ -333,7 +333,6 @@ server.listen(8080, function () {
 });
 
 io.on("connection", function (socket) {
-    console.log(`socket with the id ${socket.id} is now connected`);
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
