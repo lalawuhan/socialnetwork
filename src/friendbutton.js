@@ -8,7 +8,6 @@ export default function FriendButton({ otherUserId }) {
             .get("/initial-friendship-status/" + otherUserId)
             .then((result) => {
                 if (result.data.length == 0 || undefined) {
-                    console.log("No Friendship Established");
                     setButtonText("Make Friend Request");
                 } else if (result.data.accepted == false) {
                     if (result.data.receiver_id == otherUserId) {

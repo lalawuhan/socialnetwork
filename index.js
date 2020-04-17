@@ -42,17 +42,6 @@ app.use(express.static("public")); //url encoded always has to come first before
 
 app.use(express.json()); //body parser
 
-// COOKIE SESSION //
-
-/* const cookieSession = require("cookie-session");
-
-app.use(
-    cookieSession({
-        secret: `I'm always angry.`,
-        maxAge: 1000 * 60 * 60 * 24 * 7 * 6,
-    })
-); */
-
 const cookieSession = require("cookie-session");
 const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
@@ -129,20 +118,6 @@ app.post("/register", (req, res) => {
         });
 });
 
-//async await
-/* 
-app.post("/register", async (req, res) => {
-    const { first, last, email, password } = req.body;
-    try {
-        let hashedPw = await hash(password); //do this first
-        let id = await db.addUser(first, last, email, hashedPw); //then run db insert, then only do things after
-        req.session.userId = id;
-        res.json({ success: true });
-    } catch (error) {
-        console.log("error in POST/registration", error);
-    }
-}); */
-
 //login
 
 app.post("/login", (req, res) => {
@@ -166,15 +141,11 @@ app.post("/login", (req, res) => {
 });
 
 //forgot password
-//1 : POST /password/reset/start
 app.post("/password/reset/start", (req, res) => {
-    //const email = req.body.email;
     const secretCode = cryptoRandomString({
         length: 6,
     });
-    console.log("post request to /reset happened");
     db.getUser(req.body.email).then((result) => {
-        console.log("user exists, result rows :", result.rows[0]);
         if (result.rows[0] != undefined) {
             //generate secret code
             console.log("secret code is", secretCode);
@@ -193,8 +164,6 @@ app.post("/password/reset/start", (req, res) => {
 
 //2: POST /password/reset/verify
 app.post("/password/reset/verify", (req, res) => {
-    console.log("reset verify body", req.body);
-    //const { email, password } = req.body;
     db.verifySecretCode(req.body.email)
         .then((result) => {
             console.log("result from verify ", result.rows);
@@ -228,12 +197,10 @@ app.post("/password/reset/verify", (req, res) => {
 
 //Upload image
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    console.log("req file, upload", req.file);
     if (req.file) {
         let image_url = config.s3Url + req.file.filename;
         db.addProfilePic(image_url, req.session.userId)
             .then((image) => {
-                //console.log("image jsom", image);
                 res.json(image);
             })
             .catch((error) => {
@@ -246,6 +213,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
     }
 });
+
 //add biography
 app.post("/bio", (req, res) => {
     db.updateBiography(req.body.bioText, req.session.userId).then((results) => {
@@ -334,7 +302,6 @@ app.get("/friends-requesters", (req, res) => {
 app.post("/delete-account", (req, res) => {
     if (req.body.image_url !== null) {
         let filename = req.body.image_url.split("/").pop();
-        console.log("filename is", filename);
         s3.deleteObject(filename);
     }
     Promise.all([
