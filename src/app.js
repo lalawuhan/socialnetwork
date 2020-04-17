@@ -59,35 +59,43 @@ export default function App() {
                         <p>{data.biography}</p>
                     </div>
                 </Navbar>
-                <UploaderWrap>
-                    {data.uploaderVisibility && (
-                        <Uploader
-                            changeImageUrl={(image_url) =>
-                                setData({
-                                    ...data,
-                                    image_url: image_url,
-                                    uploaderVisibility: false,
-                                })
-                            }
-                        />
-                    )}
-                </UploaderWrap>
+                {/* <UploaderWrap> */}
+                {data.uploaderVisibility && (
+                    <Uploader
+                        changeImageUrl={(image_url) =>
+                            setData({
+                                ...data,
+                                image_url: image_url,
+                                uploaderVisibility: false,
+                            })
+                        }
+                    />
+                )}
+                {/* </UploaderWrap> */}
                 <Route
                     exact
                     path="/"
                     render={() => (
-                        <Profile
-                            first={data.first}
-                            last={data.last}
-                            image_url={data.image_url}
-                            bioText={data.biography}
-                            setBio={(bioText) =>
-                                setData({
-                                    ...data,
-                                    biography: bioText,
-                                })
-                            }
-                        />
+                        <>
+                            <Profile
+                                first={data.first}
+                                last={data.last}
+                                image_url={data.image_url}
+                                bioText={data.biography}
+                                setBio={(bioText) =>
+                                    setData({
+                                        ...data,
+                                        biography: bioText,
+                                    })
+                                }
+                                toggleModal={() =>
+                                    setData({
+                                        ...data,
+                                        uploaderVisibility: !data.uploaderVisibility,
+                                    })
+                                }
+                            />
+                        </>
                     )}
                 />
                 {/* force a new component to be rendered */}
