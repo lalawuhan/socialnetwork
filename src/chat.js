@@ -37,7 +37,13 @@ export default function Chat() {
                             chatMessages.map((msg, msg_id) => {
                                 return (
                                     <UserImage key={msg_id}>
-                                        <img src={msg.image_url} />
+                                        <img
+                                            src={
+                                                msg.image_url
+                                                    ? msg.image_url
+                                                    : "/images/default.png"
+                                            }
+                                        />
                                         <div>
                                             <b>
                                                 {msg.first} {msg.last}
