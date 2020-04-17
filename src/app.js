@@ -16,6 +16,7 @@ import {
 import { Link } from "react-router-dom";
 import DarkModeToggle from "./darkmodetoggle";
 import Chat from "./chat";
+import DeleteAccount from "./deleteaccount";
 
 export default function App() {
     const [data, setData] = useState({});
@@ -35,6 +36,8 @@ export default function App() {
         <React.Fragment>
             <BrowserRouter>
                 <UpperNav>
+                    <DeleteAccount image_url={data.image_url} />
+
                     <DarkModeToggle />
                     <Link to="/users">Find People</Link>
                     <Link to="/friends">Friends</Link>
