@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "./axios";
+import { Button } from "./standardStyles.js";
 
 export default function BioEditor(props) {
     const [data, setData] = useState({
@@ -8,7 +9,6 @@ export default function BioEditor(props) {
     });
 
     const handleSubmit = (event) => {
-        event.preventDefault();
         let bioText = event.target.value;
         axios
             .post("/bio", { bioText })
@@ -24,12 +24,19 @@ export default function BioEditor(props) {
             });
     };
 
+    const onKeyPress = (event) => {
+        if (event.which === 13 /* Enter */) {
+            event.preventDefault();
+            handleSubmit(event);
+        }
+    };
+
     if (data.bioEditorVisibility == false) {
         //if the user doesn't have a bio
         if (props.bioText == null || props.bioText == "") {
             return (
                 <div>
-                    <button
+                    <Button
                         onClick={() =>
                             setData({
                                 bioEditorVisibility: true,
@@ -37,7 +44,7 @@ export default function BioEditor(props) {
                         }
                     >
                         Create a bio
-                    </button>
+                    </Button>
                 </div>
             );
         } else {
@@ -45,7 +52,7 @@ export default function BioEditor(props) {
             return (
                 <div>
                     {props.bioText}
-                    <button
+                    <Button
                         onClick={() =>
                             setData({
                                 bioEditorVisibility: true,
@@ -54,26 +61,29 @@ export default function BioEditor(props) {
                         }
                     >
                         Edit Bio
-                    </button>
+                    </Button>
                 </div>
             );
         }
     } else {
         return (
-            <form>
+            <form onKeyPress={onKeyPress}>
                 <textarea
                     id="inputText"
                     name="inputText"
                     value={data.bioText}
-                    onChange={() => setData({ bioText: event.target.value })}
-                ></textarea>
-                <button
+                    onChange={(e) => {
+                        e.preventDefault();
+                        setData({ bioText: e.target.value });
+                    }}
+                />
+                <Button
+                    onClick={handleSubmit}
                     type="submit"
                     value={data.bioText}
-                    onClick={handleSubmit}
                 >
                     Update
-                </button>
+                </Button>
             </form>
         );
     }
