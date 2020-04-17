@@ -331,6 +331,26 @@ app.get("/friends-requesters", (req, res) => {
         });
 });
 
+app.post("/delete-account", (req, res) => {
+    if (req.body.image_url !== null) {
+        let filename = req.body.image_url.split("/").pop();
+        console.log("filename is", filename);
+        s3.deleteObject(filename);
+    }
+    Promise.all([
+        db.deleteChatData(req.session.userId),
+        db.deleteFriendshipData(req.session.userId),
+        db.deleteUserData(req.session.userId),
+    ])
+        .then(() => {
+            req.session = null;
+            res.json({ success: true });
+        })
+        .catch((error) => {
+            console.log("error in delete account", error);
+        });
+});
+
 //this route needs to be the last route
 app.get("*", (req, res) => {
     if (req.session.userId) {
