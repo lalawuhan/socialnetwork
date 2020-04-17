@@ -8,17 +8,22 @@ export default function Registration() {
     const [submit, error] = useAuthSubmit("/register", values);
 
     return (
-        <form>
+        <form onSubmit={submit}>
             {error && <div className="error">Something went wrong!</div>}
             <label>First Name: </label>
-            <input name="first" onChange={handleChange} />
+            <input name="first" required onChange={handleChange} />
             <label>Last Name: </label>
-            <input name="last" onChange={handleChange} />
+            <input name="last" required onChange={handleChange} />
             <label>Email: </label>
-            <input name="email" type="email" onChange={handleChange} />
+            <input name="email" type="email" required onChange={handleChange} />
             <label>Password </label>
-            <input name="password" type="password" onChange={handleChange} />
-            <button onClick={submit}>submit</button>
+            <input
+                name="password"
+                type="password"
+                required
+                onChange={handleChange}
+            />
+            <button type="submit">submit</button>
             <Link to="/login">Log in </Link>
         </form>
     );

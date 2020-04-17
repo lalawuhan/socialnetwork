@@ -81,7 +81,9 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
-
+a {
+    text-decoration: none;
+}
 * {
     font-family: inherit;
     font-size: inherit;
@@ -90,12 +92,37 @@ body {
 body.light-mode {
     background: #fff;
     color: #333;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.8s ease;
 }
 body.dark-mode {
     background: #1a1919;
     color: #999;
+    transition: background-color 0.8s ease;
 }
-img.dark-mode {
-    border: 1px solid pink;
+
+.light-mode a {
+    color: #8e24aa;
+}
+
+.dark-mode a {
+    color: #e1bee7;
+}
+.chatcontainer {
+    height: 300px;
+    width: 80%;
+    overflow-y: scroll;
+    background-color: #ffe5d9;
+    color: black;
+}
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 1000ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
 }

@@ -1,61 +1,79 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
+import { UserHolder, UserImage, ErrorText, Input } from "./standardStyles";
 
 export default function FindPeople() {
-    const [newestUsers, setNewestUsers] = useState([]); //initial users from list : array destructuring
-    const [searchResults, setSearchResults] = useState();
+    const [newestUsers, setNewestUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState();
+    const [error, setError] = useState(false);
+    const [users, setUsers] = useState([]);
+
     const handleChange = (e) => {
-        setSearchResults(e.target.value);
+        setSearchTerm(e.target.value);
     };
 
     useEffect(() => {
         axios
             .get("/newestUsers")
             .then(({ data }) => {
-                //console.log("findpeople.js GET newestusers: ", data);
                 setNewestUsers(data);
             })
             .catch((error) => {
                 console.log("findpeople,js GET newestusers error ", error);
+                setError(true);
             });
     }, []);
 
     useEffect(() => {
-        if (!searchResults) {
+        if (!searchTerm) {
             return;
         }
         axios
-            .get("/searchUsers/?q=" + searchResults)
+            .get("/searchUsers/?q=" + searchTerm)
             .then(({ data }) => {
                 setNewestUsers(data);
+                setUsers(data);
+                console.log("length of array", data.length);
+                console.log("OK", data.length);
             })
             .catch((error) => {
                 console.log(
                     "findpeople.js catch error in search results",
                     error
                 );
+                setError(true);
             });
-    }, [searchResults]); //useEffect's dependency array
+    }, [searchTerm]);
 
     return (
         <div>
             <>
-                <input
+                {searchTerm == null && <p>Find your friends</p>}
+
+                <Input
                     id="search-users"
                     type="text"
-                    placeholder="Search for a user"
+                    placeholder="Search"
                     onChange={handleChange}
                 />
-                {searchResults == undefined && <h2>New Users:</h2>}
-            </>
-            <p>
-                You are searching for <strong>{searchResults}</strong>
-            </p>
 
-            <div>
+                {(users.length < 1 && (
+                    <h2>{searchTerm ? searchTerm : "Please Enter Username"}</h2>
+                )) || (
+                    <p>
+                        Searching for <strong>{searchTerm}</strong>
+                    </p>
+                )}
+            </>
+
+            {error && (
+                <ErrorText>Something went wrong. Please try again.</ErrorText>
+            )}
+
+            <UserHolder>
                 {newestUsers.map((user) => (
-                    <div className="user-search-link" key={user.id}>
+                    <UserImage className="user-search-link" key={user.id}>
                         <Link to={"/user/" + user.id}>
                             <h3>
                                 {user.first} {user.last}
@@ -64,9 +82,9 @@ export default function FindPeople() {
                                 src={user.image_url || "/images/default.png"}
                             />
                         </Link>
-                    </div>
+                    </UserImage>
                 ))}
-            </div>
+            </UserHolder>
         </div>
     );
 }

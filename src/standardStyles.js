@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Title = styled.h2`
     text-align: center;
@@ -41,16 +41,97 @@ export const StyledContainer = styled.div`
     padding: 20px;
 `;
 
+export const Button = styled.button`
+    display: inline-block;
+    border-radius: 10px;
+    padding: 0.5rem 0;
+    margin: 0.5rem 1rem;
+    width: 11rem;
+    background: transparent;
+    color: inherit;
+    border: 1px solid #505050	;
+    &:hover {
+        cursor: pointer;
+         font-weight: 600;
+
+    }
+     ${(props) =>
+         props.tiny &&
+         css`
+             background: #505050;
+             color: inherit;
+             background: inherit;
+             width: 3em;
+             padding: none;
+         `}
+    ${(props) =>
+        props.primary &&
+        css`
+            background: inherit;
+            color: inherit;
+            width: 16em;
+            font-size: 0.8em;
+        `}
+    ${(props) =>
+        props.danger &&
+        css`
+            background: red;
+            color: white;
+            border: none;
+        `}
+         ${(props) =>
+             props.success &&
+             css`
+                 background: green;
+                 color: white;
+                 border: none;
+             `}
+`;
+
 export const StyledHeadlinePrimary = styled.h1`
     font-size: 36px;
     font-weight: 300;
     letter-spacing: 2px;
+`;
+export const ErrorText = styled.h3`
+    color: red;
+    font-weight: bold;
+    padding: 0em 0.5em;
 `;
 
 export const StyledItem = styled.div`
     display: flex;
     align-items: center;
     padding-bottom: 5px;
+`;
+
+export const UpperNav = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 2em 1em;
+`;
+
+export const UserHolder = styled.div`
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    padding: 2em 2em;
+    justify-items: center;
+`;
+
+export const UserImage = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    img {
+        height: 14rem;
+        width: 12rem;
+        border-radius: 10%;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 `;
 
 export const StyledColumn = styled.span`
@@ -100,4 +181,49 @@ export const StyledInput = styled.input`
     border-bottom: 1px solid #171212;
     background-color: transparent;
     font-size: 24px;
+`;
+
+export const Input = styled.input`
+    font-size: 16px;
+    border: solid 1px #dbdbdb;
+    border-radius: 3px;
+    color: #262626;
+    padding: 7px 33px;
+    border-radius: 3px;
+    color: #999;
+    cursor: text;
+    font-size: 14px;
+    font-weight: 300;
+    text-align: center;
+    background: #fafafa;
+    &:active,
+    &:focus {
+        text-align: left;
+    }
+`;
+
+export const StyledChatContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+export const StyledChatArea = styled.div`
+    overflow-y: scroll;
+    background-color: #ffe5d9;
+    color: black;
+    align-self: center;
+    max-height: 300px;
+    width: 70%;
+    margin: auto;
+`;
+export const StyledTextInput = styled.input.attrs((props) => ({
+    //we can define dynamic ones
+    size: props.size || "1em",
+}))`
+    font-size: 1em;
+    border: 2px solid black;
+    border-radius: 3px;
+    display: flex;
+    margin: 2em auto;
+    /* here we use the dynamically computed prop */
+    padding: ${(props) => props.size};
 `;

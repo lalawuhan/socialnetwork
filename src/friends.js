@@ -6,6 +6,8 @@ import {
     endFriendship,
 } from "./actions/actions";
 import { Link } from "react-router-dom";
+import { UserImage } from "./standardStyles";
+import { Button } from "./standardStyles.js";
 
 export default function Friends() {
     const dispatch = useDispatch();
@@ -28,23 +30,28 @@ export default function Friends() {
     return (
         <div>
             <div>
-                <p>Friends</p>
+                <h3>Friends</h3>
                 <>
                     {friends &&
                         friends.map((user) => {
                             return (
-                                <div key={user.id}>
-                                    <Link to={`/user/${user.id}`}>
-                                        <img src={user.image_url} />
-                                        {user.first} {user.last}
-                                    </Link>
-                                    <button
-                                        onClick={() =>
-                                            dispatch(endFriendship(user.id))
-                                        }
-                                    >
-                                        Unfriend
-                                    </button>
+                                <div>
+                                    <div key={user.id}>
+                                        <Link to={`/user/${user.id}`}>
+                                            <UserImage>
+                                                <img src={user.image_url} />
+                                                {user.first} {user.last}
+                                            </UserImage>
+                                        </Link>
+                                        <Button
+                                            primary
+                                            onClick={() =>
+                                                dispatch(endFriendship(user.id))
+                                            }
+                                        >
+                                            Unfriend
+                                        </Button>
+                                    </div>
                                 </div>
                             );
                         })}
@@ -61,7 +68,8 @@ export default function Friends() {
                                         <img src={user.image_url} />
                                         {user.first} {user.last}
                                     </Link>
-                                    <button
+                                    <Button
+                                        primary
                                         onClick={() =>
                                             dispatch(
                                                 acceptFriendRequest(user.id)
@@ -69,7 +77,7 @@ export default function Friends() {
                                         }
                                     >
                                         Accept Friend Request
-                                    </button>
+                                    </Button>
                                 </div>
                             );
                         })}

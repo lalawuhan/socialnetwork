@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
+import { Button } from "./standardStyles.js";
 
 export default function FriendButton({ otherUserId }) {
     const [buttonText, setButtonText] = useState("Make Friend Request");
@@ -59,7 +60,9 @@ export default function FriendButton({ otherUserId }) {
 
     return (
         <div>
-            <button onClick={handleClick}>{buttonText}</button>
+            <Button primary onClick={handleClick}>
+                {buttonText}
+            </Button>
         </div>
     );
 }

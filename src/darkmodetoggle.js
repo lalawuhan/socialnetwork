@@ -1,17 +1,18 @@
 import React from "react";
 import useDarkMode from "use-dark-mode";
+import { Button } from "./standardStyles.js";
 
 export default function DarkModeToggle() {
     const darkMode = useDarkMode(false);
 
     return (
         <div>
-            <button type="button" onClick={darkMode.disable}>
+            <Button tiny type="button" onClick={darkMode.disable}>
                 ☀
-            </button>
-            <button type="button" onClick={darkMode.enable}>
+            </Button>
+            <Button tiny type="button" onClick={darkMode.enable}>
                 ☾
-            </button>
+            </Button>
         </div>
     );
 }

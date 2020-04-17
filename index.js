@@ -302,7 +302,11 @@ app.get("/friends-requesters", (req, res) => {
 app.post("/delete-account", (req, res) => {
     if (req.body.image_url !== null) {
         let filename = req.body.image_url.split("/").pop();
-        s3.deleteObject(filename);
+        s3.deleteObject(filename)
+            .then((response) =>
+                console.log("image successfully deleted: ", response)
+            )
+            .catch((err) => console.log("Error deleting image: ", err));
     }
     Promise.all([
         db.deleteChatData(req.session.userId),

@@ -9,17 +9,23 @@ export default function Login() {
 
     return (
         <div>
-            <form>
+            <form onSubmit={submit}>
                 {error && <div className="error">Something went wrong!</div>}
                 <label>Email: </label>
-                <input name="email" type="email" onChange={handleChange} />
+                <input
+                    name="email"
+                    type="email"
+                    required
+                    onChange={handleChange}
+                />
                 <label>Password </label>
                 <input
                     name="password"
                     type="password"
+                    required
                     onChange={handleChange}
                 />
-                <button onClick={submit}>submit</button>
+                <button type="submit">submit</button>
             </form>
             <Link to="/register">Register</Link>
         </div>
