@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "./axios";
-import { Button } from "./standardStyles.js";
+import { Button } from "./styles/standardStyles.js";
 
 export default function BioEditor(props) {
     const [data, setData] = useState({

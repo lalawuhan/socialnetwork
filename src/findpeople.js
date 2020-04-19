@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
-import { UserHolder, UserImage, ErrorText, Input } from "./standardStyles";
+import {
+    UserHolder,
+    UserImage,
+    ErrorText,
+    Input,
+} from "./styles/standardStyles";
 
 export default function FindPeople() {
     const [newestUsers, setNewestUsers] = useState([]);
@@ -52,7 +57,7 @@ export default function FindPeople() {
                 <Input
                     id="search-users"
                     type="text"
-                    placeholder="Search"
+                    placeholder="Type to search for users..."
                     onChange={handleChange}
                 />
 

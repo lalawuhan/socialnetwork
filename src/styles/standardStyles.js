@@ -88,6 +88,42 @@ export const Button = styled.button`
              `}
 `;
 
+export const RoundedAvatar = styled.div`
+        img {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    transform: translate3d(-50%, -50%, 0);
+    left: 25em;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+        &:hover {
+            cursor: pointer;
+        }
+
+`;
+export const DivRow = styled.div`
+    height: 150px;
+
+    h1 {
+        font-size: 36px;
+        font-weight: 300;
+        letter-spacing: 2px;
+    }
+    &.avatar-row-bottom {
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+`;
+export const AvatarDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 25em;
+    margin: 0 0 0 3em;
+`;
+
 export const StyledHeadlinePrimary = styled.h1`
     font-size: 36px;
     font-weight: 300;
@@ -122,17 +158,36 @@ export const UserHolder = styled.div`
 
 export const UserImage = styled.div`
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
     img {
-        height: 14rem;
-        width: 12rem;
-        border-radius: 10%;
+        flex: 0 0 35px;
+        padding: 0em 1em;
+        border-radius: 50%;
         &:hover {
             cursor: pointer;
         }
     }
 `;
+
+/* 
+
+div.sc-fzplWN:nth-child(10) > img:nth-child(1) {
+  flex: 0 0 35px;
+  position: relative;
+  width: 6rem;
+  border-radius: 50%;
+}
+
+
+div.sc-fzplWN:nth-child(10) {
+  display: flex;
+  flex-direction: row;
+}
+
+
+div.sc-fzplWN:nth-child(10) > div:nth-child(2) > span:nth-child(3) {
+  color: lightgrey;
+} */
 
 export const StyledColumn = styled.span`
     padding: 0 5px;
@@ -185,6 +240,7 @@ export const StyledInput = styled.input`
 
 export const Input = styled.input`
     font-size: 16px;
+    width: 25rem;
     border: solid 1px #dbdbdb;
     border-radius: 3px;
     color: #262626;
@@ -199,6 +255,7 @@ export const Input = styled.input`
     &:active,
     &:focus {
         text-align: left;
+        outline-color: #8e24aa;
     }
 `;
 

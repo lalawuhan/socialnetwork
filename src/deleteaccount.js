@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./axios";
 import Modal from "react-modal";
-import { Button } from "./standardStyles.js";
+import { Button } from "./styles/standardStyles.js";
 
 export default function DeleteAccount(props) {
     const [modalIsOpen, setIsOpen] = useState(false);

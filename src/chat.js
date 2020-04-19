@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { socket } from "./socket";
 import { useSelector } from "react-redux";
 import {
     StyledChatArea,
     StyledTextInput,
     UserImage,
-} from "./standardStyles.js";
+} from "./styles/standardStyles.js";
 
 export default function Chat() {
     const elemRef = useRef();

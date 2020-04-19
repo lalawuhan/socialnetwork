@@ -1,6 +1,6 @@
 import React from "react";
 import useDarkMode from "use-dark-mode";
-import { Button } from "./standardStyles.js";
+import { Button } from "./styles/standardStyles.js";
 
 export default function DarkModeToggle() {
     const darkMode = useDarkMode(false);

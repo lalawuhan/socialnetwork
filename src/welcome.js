@@ -9,7 +9,6 @@ export default function Welcome() {
         return (
             <HashRouter>
                 <div>
-                    <h1>Welcome design here</h1>
                     <Route exact path="/" component={Registration} />
                     <Route exact path="/login" component={Login} />
                     <Route

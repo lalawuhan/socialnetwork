@@ -8,15 +8,21 @@ import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
 import {
+    AvatarDiv,
     Navbar,
     StyledHeadlinePrimary,
-    UploaderWrap,
     UpperNav,
-} from "./standardStyles.js";
+    RoundedAvatar,
+    DivRow,
+} from "./styles/standardStyles.js";
+import { GlobalStyle } from "./styles/globalStyle";
 import { Link } from "react-router-dom";
-import DarkModeToggle from "./darkmodetoggle";
 import Chat from "./chat";
 import DeleteAccount from "./deleteaccount";
+
+import { useSpring } from "react-spring";
+import { MenuRight } from "./Menu";
+import DarkModeToggle from "./darkmodetoggle";
 
 export default function App() {
     const [data, setData] = useState({});
@@ -34,34 +40,48 @@ export default function App() {
 
     return (
         <React.Fragment>
+            <GlobalStyle />
+
             <BrowserRouter>
                 <UpperNav>
-                    <DeleteAccount image_url={data.image_url} />
-
                     <DarkModeToggle />
-                    <Link to="/users">Find People</Link>
+
+                    <button
+                        className="menu-button"
+                        onClick={() => setRightMenuVisible(!rightMenuVisible)}
+                    >
+                        {rightMenuVisible ? "Close" : "Menu"}
+                    </button>
+                    <MenuRight style={rightMenuAnimation} />
+
+                    {/*  <Link to="/users">Find People</Link>
                     <Link to="/friends">Friends</Link>
-                    <Link to="/chat">Chat</Link>
+                    <Link to="/chat">Chat</Link> */}
                 </UpperNav>
-                <Navbar className="navbar">
-                    <ProfilePic
-                        first={data.first}
-                        last={data.last}
-                        image_url={data.image_url}
-                        toggleModal={() =>
-                            setData({
-                                ...data,
-                                uploaderVisibility: !data.uploaderVisibility,
-                            })
-                        }
-                    />
-                    <div>
-                        <StyledHeadlinePrimary>
+                {/* <Navbar className="navbar"> */}
+                <AvatarDiv>
+                    <DivRow className="avatar-row-top"></DivRow>
+                    <RoundedAvatar>
+                        <ProfilePic
+                            first={data.first}
+                            last={data.last}
+                            image_url={data.image_url}
+                            toggleModal={() =>
+                                setData({
+                                    ...data,
+                                    uploaderVisibility: !data.uploaderVisibility,
+                                })
+                            }
+                        />
+                    </RoundedAvatar>
+                    <DivRow className="avatar-row-bottom">
+                        <h1>
                             {data.first} {data.last}
-                        </StyledHeadlinePrimary>
+                        </h1>
                         <p>{data.biography}</p>
-                    </div>
-                </Navbar>
+                    </DivRow>
+                </AvatarDiv>
+                {/* </Navbar> */}
                 {/* <UploaderWrap> */}
                 {data.uploaderVisibility && (
                     <Uploader
@@ -79,7 +99,7 @@ export default function App() {
                     exact
                     path="/"
                     render={() => (
-                        <>
+                        <div>
                             <Profile
                                 first={data.first}
                                 last={data.last}
@@ -98,7 +118,7 @@ export default function App() {
                                     })
                                 }
                             />
-                        </>
+                        </div>
                     )}
                 />
                 {/* force a new component to be rendered */}

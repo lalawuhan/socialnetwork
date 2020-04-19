@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./axios";
 import Modal from "react-modal";
-import { Button } from "./standardStyles.js";
+import { Button } from "./styles/standardStyles.js";
 
 export default function Uploader(props) {
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -71,11 +71,12 @@ export default function Uploader(props) {
                         id="file"
                         onChange={handleChange}
                     />
-                    <Button success onClick={handleSubmit}>
-                        Submit image{" "}
-                    </Button>
+
                     <Button onClick={closeModal} primary>
                         Cancel
+                    </Button>
+                    <Button success onClick={handleSubmit}>
+                        Submit image{" "}
                     </Button>
                 </Modal>
             </div>

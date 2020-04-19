@@ -6,8 +6,8 @@ import {
     endFriendship,
 } from "./actions/actions";
 import { Link } from "react-router-dom";
-import { UserImage } from "./standardStyles";
-import { Button } from "./standardStyles.js";
+import { UserImage } from "./styles/standardStyles";
+import { Button } from "./styles/standardStyles.js";
 
 export default function Friends() {
     const dispatch = useDispatch();

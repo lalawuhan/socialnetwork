@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
-import { Button } from "./standardStyles.js";
+import { Button } from "./styles/standardStyles.js";
 
 export default function FriendButton({ otherUserId }) {
     const [buttonText, setButtonText] = useState("Make Friend Request");
