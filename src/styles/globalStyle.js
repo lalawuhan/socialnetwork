@@ -76,6 +76,7 @@ html {
     font-size: 62.5%;
 }
 body{
+    overflow-x:hidden;
     font-size: 1.5rem;
     line-height: 1.625;
     font-family: BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu,
@@ -91,7 +92,7 @@ body.light-mode {
     background: #fff;
     color: #333;
     transition: background-color 0.8s ease;
-        a {
+        .find-links {
             color: #8e24aa;
     }
     .avatar-row-top {
@@ -106,7 +107,7 @@ body.dark-mode {
    background: #1a1919;
     color: #dcdcdc;
     transition: background-color 0.8s ease;
-        a{
+        .find-links {
             color: #e1bee7;
     }
       .avatar-row-top {

@@ -23,7 +23,7 @@ export default function Registration() {
                 required
                 onChange={handleChange}
             />
-            <button type="submit">submit</button>
+            <button type="submit">Register</button>
             <Link to="/login">Log in </Link>
         </form>
     );

@@ -1,17 +1,17 @@
 import React from "react";
 import ProfilePic from "./profilepic";
 import BioEditor from "./bioeditor";
-import { ProfileWrapper } from "./styles/standardStyles.js";
+import { ProfileDesign } from "./styles/standardStyles";
 
 export default function Profile({ image_url, bioText, setBio, toggleModal }) {
     return (
         <>
-            <ProfileWrapper>
-                <div onClick={toggleModal}>
+            <div>
+                <ProfileDesign onClick={toggleModal}>
                     <ProfilePic image_url={image_url} />
-                </div>
+                </ProfileDesign>
                 <BioEditor bioText={bioText} setBio={setBio} />
-            </ProfileWrapper>
+            </div>
         </>
     );
 }

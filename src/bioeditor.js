@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "./axios";
-import { Button } from "./styles/standardStyles.js";
+import { Button, CenterDiv } from "./styles/standardStyles.js";
 
 export default function BioEditor(props) {
     const [data, setData] = useState({
@@ -35,7 +35,7 @@ export default function BioEditor(props) {
         //if the user doesn't have a bio
         if (props.bioText == null || props.bioText == "") {
             return (
-                <div>
+                <CenterDiv>
                     <Button
                         onClick={() =>
                             setData({
@@ -45,12 +45,12 @@ export default function BioEditor(props) {
                     >
                         Create a bio
                     </Button>
-                </div>
+                </CenterDiv>
             );
         } else {
             //already have bio?
             return (
-                <div>
+                <CenterDiv>
                     {props.bioText}
                     <Button
                         onClick={() =>
@@ -62,29 +62,31 @@ export default function BioEditor(props) {
                     >
                         Edit Bio
                     </Button>
-                </div>
+                </CenterDiv>
             );
         }
     } else {
         return (
-            <form onKeyPress={onKeyPress}>
-                <textarea
-                    id="inputText"
-                    name="inputText"
-                    value={data.bioText}
-                    onChange={(e) => {
-                        e.preventDefault();
-                        setData({ bioText: e.target.value });
-                    }}
-                />
-                <Button
-                    onClick={handleSubmit}
-                    type="submit"
-                    value={data.bioText}
-                >
-                    Update
-                </Button>
-            </form>
+            <CenterDiv>
+                <form onKeyPress={onKeyPress}>
+                    <textarea
+                        id="inputText"
+                        name="inputText"
+                        value={data.bioText}
+                        onChange={(e) => {
+                            e.preventDefault();
+                            setData({ bioText: e.target.value });
+                        }}
+                    />
+                    <Button
+                        onClick={handleSubmit}
+                        type="submit"
+                        value={data.bioText}
+                    >
+                        Update
+                    </Button>
+                </form>
+            </CenterDiv>
         );
     }
 }

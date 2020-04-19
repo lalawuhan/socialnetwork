@@ -10,13 +10,11 @@ import Friends from "./friends";
 import {
     AvatarDiv,
     MenuButton,
-    StyledHeadlinePrimary,
     UpperNav,
     RoundedAvatar,
     DivRow,
 } from "./styles/standardStyles.js";
 import { GlobalStyle } from "./styles/globalStyle";
-import { Link } from "react-router-dom";
 import Chat from "./chat";
 import DeleteAccount from "./deleteaccount";
 
@@ -58,12 +56,7 @@ export default function App() {
                         {rightMenuVisible ? "Close" : "Menu"}
                     </MenuButton>
                     <MenuRight style={rightMenuAnimation} />
-
-                    {/*  <Link to="/users">Find People</Link>
-                    <Link to="/friends">Friends</Link>
-                    <Link to="/chat">Chat</Link> */}
                 </UpperNav>
-                {/* <Navbar className="navbar"> */}
                 <AvatarDiv>
                     <DivRow className="avatar-row-top"></DivRow>
                     <RoundedAvatar>
@@ -86,8 +79,7 @@ export default function App() {
                         <p>{data.biography}</p>
                     </DivRow>
                 </AvatarDiv>
-                {/* </Navbar> */}
-                {/* <UploaderWrap> */}
+
                 {data.uploaderVisibility && (
                     <Uploader
                         changeImageUrl={(image_url) =>
@@ -99,7 +91,6 @@ export default function App() {
                         }
                     />
                 )}
-                {/* </UploaderWrap> */}
                 <Route
                     exact
                     path="/"
@@ -126,7 +117,6 @@ export default function App() {
                         </div>
                     )}
                 />
-                {/* force a new component to be rendered */}
                 <Route
                     path="/user/:id"
                     render={(props) => (
@@ -137,6 +127,7 @@ export default function App() {
                         />
                     )}
                 />
+
                 <Route path="/users" component={FindPeople} />
                 <Route path="/friends" component={Friends} />
                 <Route path="/chat" component={Chat} />

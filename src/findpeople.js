@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 import {
-    UserHolder,
-    UserImage,
+    SearchColumn,
+    NewUsers,
     ErrorText,
     Input,
 } from "./styles/standardStyles";
@@ -51,7 +51,7 @@ export default function FindPeople() {
 
     return (
         <div>
-            <>
+            <SearchColumn>
                 {searchTerm == null && <p>Find your friends</p>}
 
                 <Input
@@ -72,30 +72,26 @@ export default function FindPeople() {
                         Searching for <strong>{searchTerm}</strong>
                     </p>
                 )}
-            </>
+            </SearchColumn>
 
             {error && (
                 <ErrorText>Something went wrong. Please try again.</ErrorText>
             )}
 
-            <UserHolder>
+            <NewUsers>
                 {newestUsers.map((user) => (
-                    <UserImage className="user-search-link" key={user.id}>
-                        <Link to={"/user/" + user.id}>
+                    <div key={user.id}>
+                        <Link to={"/user/" + user.id} className="find-links">
                             <h3>
                                 {user.first} {user.last}
                             </h3>
-                            <div>
-                                <img
-                                    src={
-                                        user.image_url || "/images/default.png"
-                                    }
-                                />
-                            </div>
+                            <img
+                                src={user.image_url || "/images/default.png"}
+                            />
                         </Link>
-                    </UserImage>
+                    </div>
                 ))}
-            </UserHolder>
+            </NewUsers>
         </div>
     );
 }

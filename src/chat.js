@@ -5,6 +5,7 @@ import {
     StyledChatArea,
     StyledTextInput,
     UserImage,
+    UserImageHolder,
 } from "./styles/standardStyles.js";
 
 export default function Chat() {
@@ -45,7 +46,7 @@ export default function Chat() {
                         chatMessages.map((msg, msg_id) => {
                             return (
                                 <UserImage key={msg_id}>
-                                    <div className="individual-holder">
+                                    <UserImageHolder>
                                         <img
                                             className="avatar"
                                             src={
@@ -67,7 +68,7 @@ export default function Chat() {
                                                 {msg.time_posted}
                                             </span>
                                         </div>
-                                    </div>
+                                    </UserImageHolder>
                                 </UserImage>
                             );
                         })}
