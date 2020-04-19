@@ -9,6 +9,15 @@ import {
 
 export default function Chat() {
     const elemRef = useRef();
+    let max_chars = 30;
+    const [state, setState] = useState({ chars_left: max_chars });
+
+    const handleChange = (event) => {
+        var input = event.target.value;
+        setState({
+            chars_left: max_chars - input.length,
+        });
+    };
 
     const chatMessages = useSelector((state) => state && state.messages);
     useEffect(() => {
@@ -32,12 +41,13 @@ export default function Chat() {
 
             <div>
                 <StyledChatArea ref={elemRef}>
-                    <div>
-                        {chatMessages &&
-                            chatMessages.map((msg, msg_id) => {
-                                return (
-                                    <UserImage key={msg_id}>
+                    {chatMessages &&
+                        chatMessages.map((msg, msg_id) => {
+                            return (
+                                <UserImage key={msg_id}>
+                                    <div className="individual-holder">
                                         <img
+                                            className="avatar"
                                             src={
                                                 msg.image_url
                                                     ? msg.image_url
@@ -45,27 +55,34 @@ export default function Chat() {
                                             }
                                         />
                                         <div>
-                                            <b>
-                                                {msg.first} {msg.last}
-                                            </b>
-                                            <br></br>
-                                            <span>
-                                                {msg.message} posted at:{" "}
+                                            <div className="message-avatar">
+                                                <span className="message">
+                                                    {msg.message}{" "}
+                                                </span>
+                                                <span className="avatar-name">
+                                                    {msg.first} {msg.last}
+                                                </span>
+                                            </div>
+                                            <span className="timeposted">
                                                 {msg.time_posted}
                                             </span>
                                         </div>
-                                    </UserImage>
-                                );
-                            })}
-                    </div>
+                                    </div>
+                                </UserImage>
+                            );
+                        })}
                 </StyledChatArea>
                 <div id="textarea">
                     <StyledTextInput
                         className="textarea"
+                        type="text"
                         placeholder="Add your message here"
                         onKeyDown={keyCheck}
+                        onChange={handleChange}
                         size="2em"
+                        maxLength="30"
                     ></StyledTextInput>
+                    <span>Characters Left: {state.chars_left}</span>
                 </div>
             </div>
         </div>
