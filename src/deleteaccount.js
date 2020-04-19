@@ -43,7 +43,7 @@ export default function DeleteAccount(props) {
     };
 
     return (
-        <>
+        <div>
             <div>
                 <Button onClick={openModal}>Delete Account</Button>
                 <Modal
@@ -68,6 +68,6 @@ export default function DeleteAccount(props) {
                 </Modal>
             </div>
             {/* <button onClick={deleteAccount}>Delete</button> */}
-        </>
+        </div>
     );
 }

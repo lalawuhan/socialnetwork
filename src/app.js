@@ -115,6 +115,7 @@ export default function App() {
                 <Route path="/users" component={FindPeople} />
                 <Route path="/friends" component={Friends} />
                 <Route path="/chat" component={Chat} />
+                <DeleteAccount image_url={data.image_url} />
             </BrowserRouter>
         </React.Fragment>
     );

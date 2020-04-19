@@ -10,6 +10,7 @@ const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
 const config = require("./config");
 const s3 = require("./s3");
+const moment = require("moment");
 
 // FILE UPLOAD BOILERPLATE //
 const multer = require("multer");
@@ -240,7 +241,12 @@ app.get("/user/:id.json", (req, res) => {
 app.get("/newestUsers", (req, res) => {
     db.getNewestUsers()
         .then((results) => {
-            res.json(results.rows);
+            const resultsObj = results.rows.filter((user) => {
+                if (user.id != req.session.userId) {
+                    return user;
+                }
+            });
+            res.json(resultsObj);
         })
         .catch((error) => {
             console.log("index.js /users db.getNewestUsers error: ", error);
@@ -322,6 +328,11 @@ app.post("/delete-account", (req, res) => {
         });
 });
 
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
+});
+
 //this route needs to be the last route
 app.get("*", (req, res) => {
     if (req.session.userId) {
@@ -344,6 +355,11 @@ io.on("connection", function (socket) {
     const userId = socket.request.session.userId;
     db.getLastTenMessages()
         .then((data) => {
+            for (let i = 0; i < data.rows.length; i++) {
+                data.rows[i].time_posted = moment(
+                    data.rows[i].time_posted
+                ).format("MMMM Do YYYY, h:mm:ss a");
+            }
             let messageData = data.rows;
             io.sockets.emit("chatMessages", messageData.reverse());
         })
@@ -353,6 +369,11 @@ io.on("connection", function (socket) {
         db.addMessage(userId, msg)
             .then(() => {
                 db.getLastTenMessages().then((newMessage) => {
+                    for (let i = 0; i < newMessage.rows.length; i++) {
+                        newMessage.rows[i].time_posted = moment(
+                            newMessage.rows[i].time_posted
+                        ).format("MMMM Do YYYY, h:mm:ss a");
+                    }
                     let msgObj = {
                         first: newMessage.rows[0].first,
                         last: newMessage.rows[0].last,

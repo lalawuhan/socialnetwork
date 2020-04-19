@@ -100,7 +100,7 @@ module.exports.getNewestUsers = () => {
             SELECT id, first, last, image_url
             FROM users
             ORDER BY id DESC
-            LIMIT 3
+            LIMIT 4
         `;
     return db.query(q);
 };

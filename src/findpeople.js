@@ -34,8 +34,6 @@ export default function FindPeople() {
             .then(({ data }) => {
                 setNewestUsers(data);
                 setUsers(data);
-                console.log("length of array", data.length);
-                console.log("OK", data.length);
             })
             .catch((error) => {
                 console.log(
@@ -59,7 +57,11 @@ export default function FindPeople() {
                 />
 
                 {(users.length < 1 && (
-                    <h2>{searchTerm ? searchTerm : "Please Enter Username"}</h2>
+                    <h2>
+                        {searchTerm
+                            ? `No Results for ${searchTerm}`
+                            : "Please Enter Username"}
+                    </h2>
                 )) || (
                     <p>
                         Searching for <strong>{searchTerm}</strong>
@@ -78,9 +80,13 @@ export default function FindPeople() {
                             <h3>
                                 {user.first} {user.last}
                             </h3>
-                            <img
-                                src={user.image_url || "/images/default.png"}
-                            />
+                            <div>
+                                <img
+                                    src={
+                                        user.image_url || "/images/default.png"
+                                    }
+                                />
+                            </div>
                         </Link>
                     </UserImage>
                 ))}
