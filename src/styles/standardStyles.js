@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { animated } from "react-spring";
 
 export const Title = styled.h2`
     text-align: center;
@@ -122,6 +123,50 @@ export const AvatarDiv = styled.div`
     flex-direction: column;
     width: 25em;
     margin: 0 0 0 3em;
+`;
+
+export const Menu = styled(animated.div)`
+    position: absolute;
+    background-color: #ed5e93;
+    color: #fff;
+    z-index: 30;
+
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100vh;
+`;
+export const MenuList = styled.ul`
+    padding: 0;
+    list-style: none;
+    margin: 100px 24px;
+`;
+export const MenuItem = styled.li`
+    margin: 24px 0;
+    a {
+        text-decoration: none;
+        color: #9285a5;
+    }
+    a:hover {
+        color: #fff;
+    }
+`;
+export const MenuButton = styled.button`
+    z-index: 40;
+    border: none;
+    position: fixed;
+    top: 40px;
+    right: 20px;
+    padding: 12px;
+    font-size: 1em;
+    background: none;
+    background: #fff;
+    color: #ed5e93;
+    transition: background 0.1s linear;
+    cursor: pointer;
+    :hover {
+        background: #e8daff;
+    }
 `;
 
 export const StyledHeadlinePrimary = styled.h1`

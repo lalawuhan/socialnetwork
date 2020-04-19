@@ -9,7 +9,7 @@ import FindPeople from "./findpeople";
 import Friends from "./friends";
 import {
     AvatarDiv,
-    Navbar,
+    MenuButton,
     StyledHeadlinePrimary,
     UpperNav,
     RoundedAvatar,
@@ -27,6 +27,11 @@ import DarkModeToggle from "./darkmodetoggle";
 export default function App() {
     const [data, setData] = useState({});
 
+    const [rightMenuVisible, setRightMenuVisible] = useState(false);
+    const rightMenuAnimation = useSpring({
+        opacity: rightMenuVisible ? 1 : 0,
+        transform: rightMenuVisible ? `translateX(0)` : `translateX(100%)`,
+    });
     useEffect(() => {
         axios
             .get("/user")
@@ -46,12 +51,12 @@ export default function App() {
                 <UpperNav>
                     <DarkModeToggle />
 
-                    <button
+                    <MenuButton
                         className="menu-button"
                         onClick={() => setRightMenuVisible(!rightMenuVisible)}
                     >
                         {rightMenuVisible ? "Close" : "Menu"}
-                    </button>
+                    </MenuButton>
                     <MenuRight style={rightMenuAnimation} />
 
                     {/*  <Link to="/users">Find People</Link>
