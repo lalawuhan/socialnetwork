@@ -31,7 +31,7 @@ export default function Uploader(props) {
             marginRight: "-50%",
             transform: "translate(-50%, -50%)",
             padding: "2em",
-            background: "#121212",
+            background: "#303030",
             color: "white",
             width: "25em",
         },
@@ -64,17 +64,15 @@ export default function Uploader(props) {
                     contentLabel="Delete Account Modal"
                     closeTimeoutMS={1000}
                 >
-                    <h3>Upload New Profile Photo</h3>
+                    <h3>Upload Profile Photo</h3>
                     <input
                         type="file"
                         name="file"
                         id="file"
                         onChange={handleChange}
                     />
-
-                    <Button onClick={closeModal} primary>
-                        Cancel
-                    </Button>
+                    <br />
+                    <Button onClick={closeModal}>Cancel</Button>
                     <Button success onClick={handleSubmit}>
                         Submit image{" "}
                     </Button>

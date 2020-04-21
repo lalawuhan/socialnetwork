@@ -6,7 +6,7 @@ import {
     endFriendship,
 } from "./actions/actions";
 import { Link } from "react-router-dom";
-import { UserImage } from "./styles/standardStyles";
+import { UserImage, NewUsers } from "./styles/standardStyles";
 import { Button } from "./styles/standardStyles.js";
 
 export default function Friends() {
@@ -31,20 +31,18 @@ export default function Friends() {
         <div>
             <div>
                 <h3>Friends</h3>
-                <>
+                <NewUsers>
                     {friends &&
                         friends.map((user) => {
                             return (
-                                <div>
-                                    <div key={user.id}>
+                                <div key={user.id}>
+                                    <div>
                                         <Link to={`/user/${user.id}`}>
-                                            <UserImage>
-                                                <img src={user.image_url} />
-                                                {user.first} {user.last}
-                                            </UserImage>
+                                            {user.first} {user.last}
+                                            <img src={user.image_url} />
                                         </Link>
                                         <Button
-                                            primary
+                                            friend
                                             onClick={() =>
                                                 dispatch(endFriendship(user.id))
                                             }
@@ -55,21 +53,21 @@ export default function Friends() {
                                 </div>
                             );
                         })}
-                </>
+                </NewUsers>
             </div>
             <div>
                 <p>Friend Requests </p>
-                <div>
+                <NewUsers>
                     {requesters &&
                         requesters.map((user) => {
                             return (
                                 <div key={user.id}>
                                     <Link to={`/user/${user.id}`}>
-                                        <img src={user.image_url} />
                                         {user.first} {user.last}
+                                        <img src={user.image_url} />
                                     </Link>
                                     <Button
-                                        primary
+                                        friend
                                         onClick={() =>
                                             dispatch(
                                                 acceptFriendRequest(user.id)
@@ -81,7 +79,7 @@ export default function Friends() {
                                 </div>
                             );
                         })}
-                </div>
+                </NewUsers>
             </div>
         </div>
     );

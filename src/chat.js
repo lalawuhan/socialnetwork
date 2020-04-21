@@ -6,11 +6,13 @@ import {
     StyledTextInput,
     UserImage,
     UserImageHolder,
+    TextInputChild,
 } from "./styles/standardStyles.js";
+import { Link } from "react-router-dom";
 
 export default function Chat() {
     const elemRef = useRef();
-    let max_chars = 30;
+    let max_chars = 45;
     const [state, setState] = useState({ chars_left: max_chars });
 
     const handleChange = (event) => {
@@ -36,25 +38,24 @@ export default function Chat() {
 
     return (
         <div>
-            <span>
-                <div>Chat Box</div>
-            </span>
-
             <div>
                 <StyledChatArea ref={elemRef}>
                     {chatMessages &&
                         chatMessages.map((msg, msg_id) => {
+                            console.log("msg", msg);
                             return (
                                 <UserImage key={msg_id}>
                                     <UserImageHolder>
-                                        <img
-                                            className="avatar"
-                                            src={
-                                                msg.image_url
-                                                    ? msg.image_url
-                                                    : "/images/default.png"
-                                            }
-                                        />
+                                        <Link to={"/user/" + msg.sender_id}>
+                                            <img
+                                                className="avatar"
+                                                src={
+                                                    msg.image_url
+                                                        ? msg.image_url
+                                                        : "/images/default.png"
+                                                }
+                                            />
+                                        </Link>
                                         <div>
                                             <div className="message-avatar">
                                                 <span className="message">
@@ -73,7 +74,7 @@ export default function Chat() {
                             );
                         })}
                 </StyledChatArea>
-                <div id="textarea">
+                <TextInputChild id="textarea">
                     <StyledTextInput
                         className="textarea"
                         type="text"
@@ -81,10 +82,10 @@ export default function Chat() {
                         onKeyDown={keyCheck}
                         onChange={handleChange}
                         size="2em"
-                        maxLength="30"
+                        maxLength="45"
                     ></StyledTextInput>
                     <span>Characters Left: {state.chars_left}</span>
-                </div>
+                </TextInputChild>
             </div>
         </div>
     );

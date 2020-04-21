@@ -127,7 +127,6 @@ export default function App() {
                         />
                     )}
                 />
-
                 <Route path="/users" component={FindPeople} />
                 <Route path="/friends" component={Friends} />
                 <Route path="/chat" component={Chat} />

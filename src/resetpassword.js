@@ -1,39 +1,43 @@
 import React from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
-//conditional rerendering
+import {
+    Input,
+    Button,
+    ResetPasswordContainer,
+    ResetPasswordDiv,
+} from "./styles/standardStyles";
+
 export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            step: 1
+            step: 1,
         };
     }
     handleChange({ target }) {
         this.setState({
-            [target.name]: target.value
+            [target.name]: target.value,
         });
     }
 
     submit() {
-        console.log("submit in resetpassword happening");
         axios
             .post("/password/reset/start", {
-                email: this.state.email
+                email: this.state.email,
             })
-            .then(res => {
+            .then((res) => {
                 console.log("response from submit resetpassword", res);
                 this.setState({ step: 2 });
             });
     }
 
     verifyCode() {
-        console.log("verifyCode in resetpassword");
         axios
             .post("/password/reset/verify", {
                 password: this.state.password,
                 code: this.state.code,
-                email: this.state.email
+                email: this.state.email,
             })
             .then(({ res }) => {
                 console.log("res body in verify code", res);
@@ -44,61 +48,75 @@ export default class ResetPassword extends React.Component {
     getCurrentDisplay() {
         if (this.state.step === 1) {
             return (
-                <div>
-                    {this.state.error && <div className="error">Oh no</div>}
-                    <h1>Reset Password Fail</h1>
-                    Please enter the email you used for your account
-                    <input
-                        name="email"
-                        placeholder="email"
-                        onChange={e => this.handleChange(e)}
-                    />
-                    <button onClick={() => this.submit()}>Submit Email</button>
-                    <br />
-                </div>
+                <ResetPasswordContainer>
+                    <ResetPasswordDiv>
+                        {this.state.error && (
+                            <div className="error">Error happened</div>
+                        )}
+                        <h2>Reset Password</h2>
+
+                        <h2>
+                            Please enter the email you used for your account
+                        </h2>
+                        <Input
+                            name="email"
+                            placeholder="email"
+                            onChange={(e) => this.handleChange(e)}
+                        />
+                        <Button submit onClick={() => this.submit()}>
+                            Submit Email
+                        </Button>
+                        <br />
+                    </ResetPasswordDiv>
+                </ResetPasswordContainer>
             );
         }
 
         if (this.state.step === 2) {
             return (
-                <div>
-                    {this.state.error && <div className="error">oh no!</div>}
-                    <h1>Reset Password</h1>
-                    <p>Please enter the code you received by email below</p>
-                    <input
-                        name="code"
-                        onChange={e => this.handleChange(e)}
-                        key="secret-code"
-                    />
-                    <p>
-                        Please enter a <strong>new</strong> password
-                    </p>
-                    <input
-                        name="password"
-                        onChange={e => this.handleChange(e)}
-                        key="new-password"
-                    />
-                    <button onClick={() => this.verifyCode()}>Submit</button>
-                    <br />
-                </div>
+                <ResetPasswordContainer>
+                    <ResetPasswordDiv>
+                        {this.state.error && (
+                            <div className="error">oh no!</div>
+                        )}
+                        <h2>
+                            Please enter the code you received by email below
+                        </h2>
+                        <Input
+                            name="code"
+                            onChange={(e) => this.handleChange(e)}
+                            key="secret-code"
+                        />
+                        <h2>
+                            Please enter a <strong>new</strong> password
+                        </h2>
+                        <Input
+                            name="password"
+                            onChange={(e) => this.handleChange(e)}
+                            key="new-password"
+                            minLength={6}
+                        />
+                        <Button submit onClick={() => this.verifyCode()}>
+                            Submit
+                        </Button>
+                        <br />
+                    </ResetPasswordDiv>
+                </ResetPasswordContainer>
             );
         }
 
         if (this.state.step === 3) {
             return (
-                <div>
-                    <h2>YAYYYYYYYYYY</h2>
-                    <Link to="/login">Log in</Link>
-                </div>
+                <ResetPasswordContainer>
+                    <ResetPasswordDiv>
+                        <h2>Great, you can now login with your new password</h2>
+                        <Link to="/login">Log in</Link>
+                    </ResetPasswordDiv>
+                </ResetPasswordContainer>
             );
         }
     }
     render() {
-        return (
-            <div>
-                <h2>Lorem ipsum heading</h2>
-                {this.getCurrentDisplay()}
-            </div>
-        );
+        return <div>{this.getCurrentDisplay()}</div>;
     }
 }

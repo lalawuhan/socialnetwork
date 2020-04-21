@@ -52,7 +52,7 @@ export default function FindPeople() {
     return (
         <div>
             <SearchColumn>
-                {searchTerm == null && <p>Find your friends</p>}
+                {searchTerm == null && <h3>Find your friends</h3>}
 
                 <Input
                     id="search-users"
@@ -62,11 +62,11 @@ export default function FindPeople() {
                 />
 
                 {(users.length < 1 && (
-                    <h2>
+                    <h3>
                         {searchTerm
                             ? `No Results for ${searchTerm}`
                             : "Please Enter Username"}
-                    </h2>
+                    </h3>
                 )) || (
                     <p>
                         Searching for <strong>{searchTerm}</strong>
@@ -82,9 +82,9 @@ export default function FindPeople() {
                 {newestUsers.map((user) => (
                     <div key={user.id}>
                         <Link to={"/user/" + user.id} className="find-links">
-                            <h3>
+                            <h4>
                                 {user.first} {user.last}
-                            </h3>
+                            </h4>
                             <img
                                 src={user.image_url || "/images/default.png"}
                             />

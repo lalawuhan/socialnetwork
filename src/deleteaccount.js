@@ -53,11 +53,11 @@ export default function DeleteAccount(props) {
                     contentLabel="Delete Account Modal"
                     closeTimeoutMS={1000}
                 >
-                    <h1>Are you sure you want to delete your account?</h1>
-
+                    <h3>Are you sure you want to delete your account?</h3>
+                    <br />
                     <p>
                         If you delete your account, you will permanently lose
-                        your profile, messages and profile photo.
+                        your account, messages and profile photo.
                     </p>
                     <Button onClick={closeModal} primary>
                         Cancel
