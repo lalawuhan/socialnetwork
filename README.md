@@ -1,5 +1,5 @@
 Vast void social network is the last project from my bootcamp. 
-
+![Gif](https://github.com/lalawuhan/socialnetwork/blob/master/public/images/demo.gif?raw=true)
 
 #### Built with
  PostgreSQL, AWS (S3), Styled Components, React, Redux, Node.js (Express), Moment.js, Socket.io, Multer Image Upload
@@ -45,12 +45,12 @@ Paste in the following code inside secrets.json and configure it accordingly
 
 Demo
 --- 
-![Gif](https://github.com/lalawuhan/socialnetwork/blob/master/public/images/demo.gif?raw=true)
+
 | Registration                                                                                                  |                                               Chat                                                |                                                                                                    Search |
 | ------------------------------------------------------------------------------------------------------------- | :-----------------------------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------: |
 | ![Logged In View](https://github.com/lalawuhan/socialnetwork/blob/master/public/images/loggedin.png?raw=true) | ![Chat](https://github.com/lalawuhan/socialnetwork/blob/master/public/images/socket.png?raw=true) | ![search](https://github.com/lalawuhan/socialnetwork/blob/master/public/images/friendsearch.png?raw=true) |
 
-###Attributions
+### Attributions
 
 * [Dark Mode Feature](https://github.com/donavon/use-dark-mode)
 * [Demo user](https://thispersondoesnotexist.com/) is not a real person
